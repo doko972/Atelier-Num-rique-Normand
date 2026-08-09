@@ -1,0 +1,39 @@
+{
+  "node_modules/@fontsource/atkinson-hyperlegible/files/atkinson-hyperlegible-latin-400-normal.woff": {
+    "file": "assets/atkinson-hyperlegible-latin-400-normal-BbWidj28.woff",
+    "src": "node_modules/@fontsource/atkinson-hyperlegible/files/atkinson-hyperlegible-latin-400-normal.woff"
+  },
+  "node_modules/@fontsource/atkinson-hyperlegible/files/atkinson-hyperlegible-latin-400-normal.woff2": {
+    "file": "assets/atkinson-hyperlegible-latin-400-normal-BrHNak5F.woff2",
+    "src": "node_modules/@fontsource/atkinson-hyperlegible/files/atkinson-hyperlegible-latin-400-normal.woff2"
+  },
+  "node_modules/@fontsource/atkinson-hyperlegible/files/atkinson-hyperlegible-latin-700-normal.woff": {
+    "file": "assets/atkinson-hyperlegible-latin-700-normal-BK6Glc0m.woff",
+    "src": "node_modules/@fontsource/atkinson-hyperlegible/files/atkinson-hyperlegible-latin-700-normal.woff"
+  },
+  "node_modules/@fontsource/atkinson-hyperlegible/files/atkinson-hyperlegible-latin-700-normal.woff2": {
+    "file": "assets/atkinson-hyperlegible-latin-700-normal-GZI4o3u0.woff2",
+    "src": "node_modules/@fontsource/atkinson-hyperlegible/files/atkinson-hyperlegible-latin-700-normal.woff2"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-DMBrRDzg.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-CaNS5dzD.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/sass/app.scss",
+    "isEntry": true,
+    "assets": [
+      "assets/atkinson-hyperlegible-latin-400-normal-BrHNak5F.woff2",
+      "assets/atkinson-hyperlegible-latin-400-normal-BbWidj28.woff",
+      "assets/atkinson-hyperlegible-latin-700-normal-GZI4o3u0.woff2",
+      "assets/atkinson-hyperlegible-latin-700-normal-BK6Glc0m.woff"
+    ]
+  }
+}
