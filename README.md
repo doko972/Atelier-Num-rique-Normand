@@ -1,2 +1,2 @@
-# Atelier-Num-rique-Normand
+# Atelier-Numerique-Normand
 My website
