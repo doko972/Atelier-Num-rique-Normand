@@ -1,0 +1,116 @@
+// =============================================================================
+// Section héro de la page d'accueil
+// =============================================================================
+@use '../abstracts' as a;
+
+.hero {
+    background-color: var(--color-primary-light);
+    padding-block: a.$space-xl;
+    border-bottom: var(--border-width) solid var(--color-border);
+
+    @include a.from('md') {
+        padding-block: a.$space-2xl;
+    }
+}
+
+.hero__inner {
+    @include a.container;
+    display: grid;
+    gap: a.$space-lg;
+    align-items: center;
+
+    @include a.from('lg') {
+        grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+        gap: a.$space-2xl;
+    }
+}
+
+.hero__title {
+    font-size: a.$font-size-3xl;
+
+    @include a.from('md') {
+        font-size: a.$font-size-4xl;
+    }
+}
+
+.hero__subtitle {
+    margin-top: a.$space-sm;
+    font-size: a.$font-size-lg;
+    color: var(--color-text);
+
+    @include a.from('md') {
+        font-size: a.$font-size-xl;
+    }
+}
+
+.hero__actions {
+    margin-top: a.$space-lg;
+    display: flex;
+    flex-direction: column;
+    gap: a.$space-2xs;
+
+    @include a.from('sm') {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+.hero__note {
+    margin-top: a.$space-md;
+    font-size: a.$font-size-sm;
+    color: var(--color-text-muted);
+}
+
+.hero__media {
+    border-radius: a.$radius-lg;
+    border: var(--border-width) solid var(--color-border);
+    box-shadow: var(--shadow-md);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+}
+
+// Parcours en trois étapes
+.steps {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: a.$space-md;
+
+    @include a.from('md') {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.steps__item {
+    counter-increment: step;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-lg;
+    padding: a.$space-md;
+    padding-top: a.$space-lg;
+    position: relative;
+}
+
+.steps__item::before {
+    content: counter(step);
+    position: absolute;
+    top: calc(-1 * #{a.$space-sm});
+    inset-inline-start: a.$space-md;
+    width: 2.6rem;
+    height: 2.6rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+    font-weight: a.$font-weight-bold;
+    font-size: a.$font-size-lg;
+}
+
+.steps__title {
+    font-size: a.$font-size-lg;
+    margin-bottom: a.$space-3xs;
+}

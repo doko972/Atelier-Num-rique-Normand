@@ -1,0 +1,78 @@
+// =============================================================================
+// Sections de page
+// =============================================================================
+@use '../abstracts' as a;
+
+.section {
+    padding-block: a.$space-xl;
+
+    @include a.from('md') {
+        padding-block: a.$space-2xl;
+    }
+}
+
+.section--tight {
+    padding-block: a.$space-lg;
+}
+
+.section--surface {
+    background-color: var(--color-surface);
+}
+
+.section--sunken {
+    background-color: var(--color-surface-sunken);
+}
+
+.section--primary {
+    background-color: var(--color-primary-light);
+}
+
+.section--secondary {
+    background-color: var(--color-secondary-light);
+}
+
+.section__header {
+    max-width: a.$container-narrow;
+    margin-bottom: a.$space-lg;
+
+    p {
+        margin-top: a.$space-2xs;
+        font-size: a.$font-size-lg;
+        color: var(--color-text-muted);
+    }
+}
+
+.section__header--center {
+    margin-inline: auto;
+    text-align: center;
+
+    p {
+        margin-inline: auto;
+    }
+}
+
+.section__footer {
+    margin-top: a.$space-lg;
+}
+
+// En-tête des pages internes
+.page-header {
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+    padding-block: a.$space-lg a.$space-xl;
+
+    h1 {
+        color: var(--color-primary-contrast);
+    }
+
+    p {
+        margin-top: a.$space-2xs;
+        font-size: a.$font-size-lg;
+        color: var(--color-primary-contrast);
+        opacity: 0.95;
+    }
+
+    a {
+        color: var(--color-primary-contrast);
+    }
+}

@@ -1,0 +1,159 @@
+// =============================================================================
+// Plaquette grand public, au format A5
+//
+// Conçue pour être imprimée chez soi, deux par feuille A4, puis coupée en
+// deux. Elle est déposée en mairie, en médiathèque, en pharmacie ou dans une
+// salle d'attente.
+//
+// Trois contraintes dictent la mise en page :
+//   1. le numéro de téléphone est l'élément le plus gros de la page ;
+//   2. tout doit rester lisible imprimé en noir et blanc, car c'est ainsi
+//      que la plupart des gens impriment ;
+//   3. le texte est réduit au strict nécessaire — une plaquette n'est pas
+//      un site web.
+// =============================================================================
+@use '../abstracts' as a;
+
+// La largeur, le fond et les marges sont portés par la feuille du gabarit
+// (`.print-sheet`), commune à tous les documents imprimables.
+.leaflet {
+    color: #000000;
+}
+
+.leaflet__header {
+    display: flex;
+    align-items: center;
+    gap: a.$space-2xs;
+    padding-bottom: a.$space-2xs;
+    border-bottom: 2px solid #000000;
+}
+
+.leaflet__logo {
+    flex: none;
+    width: 18mm;
+    height: 18mm;
+    object-fit: contain;
+}
+
+.leaflet__name {
+    font-size: 15pt;
+    font-weight: a.$font-weight-bold;
+    line-height: 1.15;
+    margin: 0;
+    color: #000000;
+}
+
+.leaflet__tagline {
+    font-size: 9pt;
+    margin: 0;
+}
+
+.leaflet__claim {
+    font-size: 12pt;
+    font-weight: a.$font-weight-bold;
+    text-align: center;
+    margin-block: a.$space-sm;
+    line-height: 1.35;
+}
+
+// -----------------------------------------------------------------------------
+// Ce que je fais
+// -----------------------------------------------------------------------------
+.leaflet__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    columns: 2;
+    column-gap: a.$space-md;
+    font-size: 9.5pt;
+
+    li {
+        break-inside: avoid;
+        padding-left: 4mm;
+        margin-bottom: 1.5mm;
+        position: relative;
+    }
+
+    // Puce dessinée en CSS : elle reste visible en noir et blanc.
+    li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.45em;
+        width: 2mm;
+        height: 2mm;
+        background-color: #000000;
+        border-radius: 50%;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Le téléphone : l'élément le plus important de la page
+// -----------------------------------------------------------------------------
+.leaflet__phone {
+    margin-block: a.$space-sm;
+    padding: a.$space-2xs;
+    border: 3px solid #000000;
+    border-radius: 3mm;
+    text-align: center;
+}
+
+.leaflet__phone-label {
+    display: block;
+    font-size: 10pt;
+    margin-bottom: 1mm;
+}
+
+.leaflet__phone-number {
+    display: block;
+    font-size: 26pt;
+    font-weight: a.$font-weight-bold;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    color: #000000;
+    text-decoration: none;
+}
+
+.leaflet__hours {
+    display: block;
+    font-size: 8.5pt;
+    margin-top: 1mm;
+}
+
+// -----------------------------------------------------------------------------
+// Bas de plaquette
+// -----------------------------------------------------------------------------
+.leaflet__footer {
+    margin-top: a.$space-sm;
+    padding-top: a.$space-2xs;
+    border-top: 1px solid #000000;
+    font-size: 8.5pt;
+}
+
+.leaflet__coverage {
+    margin-bottom: 1.5mm;
+}
+
+.leaflet__legal {
+    font-size: 7.5pt;
+}
+
+// -----------------------------------------------------------------------------
+// Impression
+// -----------------------------------------------------------------------------
+@media print {
+    // Format A5 : dans la boîte de dialogue d'impression, choisir
+    // « 2 pages par feuille » pour obtenir deux plaquettes par A4.
+    @page {
+        size: A5;
+        margin: 8mm;
+    }
+
+    // Force l'impression du cadre du téléphone, que certains navigateurs
+    // suppriment en mode économie d'encre.
+    .leaflet,
+    .leaflet__phone {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+}

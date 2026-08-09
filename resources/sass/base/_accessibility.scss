@@ -1,0 +1,64 @@
+// =============================================================================
+// Utilitaires d'accessibilité
+// =============================================================================
+@use '../abstracts' as a;
+
+.visually-hidden {
+    @include a.visually-hidden;
+}
+
+// Masqué visuellement mais révélé au focus (liens d'évitement).
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+    @include a.visually-hidden;
+}
+
+.skip-links {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    z-index: a.$z-skip-link;
+}
+
+.skip-link {
+    position: absolute;
+    inset-inline-start: a.$space-sm;
+    inset-block-start: -100vh;
+    display: inline-block;
+    padding: a.$space-2xs a.$space-md;
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+    font-weight: a.$font-weight-bold;
+    text-decoration: none;
+    border-radius: 0 0 a.$radius-md a.$radius-md;
+
+    &:focus {
+        inset-block-start: 0;
+    }
+}
+
+// Repère de destination pour les liens d'évitement.
+[tabindex='-1']:focus {
+    outline: none;
+}
+
+// Indicateur d'obligation des champs, jamais uniquement par la couleur.
+.required-mark {
+    color: var(--color-danger);
+    font-weight: a.$font-weight-bold;
+
+    &::after {
+        content: ' (obligatoire)';
+        @include a.visually-hidden;
+    }
+}
+
+// Zone d'annonces pour les lecteurs d'écran.
+.sr-live {
+    @include a.visually-hidden;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}

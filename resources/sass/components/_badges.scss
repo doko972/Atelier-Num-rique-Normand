@@ -1,0 +1,70 @@
+// =============================================================================
+// Étiquettes de statut — texte explicite + forme, jamais la couleur seule
+// =============================================================================
+@use '../abstracts' as a;
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: a.$space-3xs;
+    padding: 0.15rem a.$space-2xs;
+    border-radius: a.$radius-pill;
+    border: var(--border-width) solid currentColor;
+    font-size: a.$font-size-sm;
+    font-weight: a.$font-weight-bold;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+
+.badge::before {
+    content: '';
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    background-color: currentColor;
+    flex: none;
+}
+
+.badge--neutral {
+    color: var(--color-text-muted);
+    background-color: var(--color-surface-sunken);
+}
+
+.badge--info {
+    color: var(--color-info);
+    background-color: var(--color-info-bg);
+}
+
+.badge--success {
+    color: var(--color-success);
+    background-color: var(--color-success-bg);
+}
+
+.badge--warning {
+    color: var(--color-warning);
+    background-color: var(--color-warning-bg);
+}
+
+.badge--danger {
+    color: var(--color-danger);
+    background-color: var(--color-danger-bg);
+}
+
+.badge--primary {
+    color: var(--color-primary);
+    background-color: var(--color-primary-light);
+}
+
+// Le carré distingue les statuts « terminé/archivé » des statuts actifs.
+.badge--square::before {
+    border-radius: 0;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-3xs;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}

@@ -1,0 +1,50 @@
+// =============================================================================
+// Messages de succès, d'erreur et d'information
+// =============================================================================
+@use '../abstracts' as a;
+
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: a.$space-2xs;
+    padding: a.$space-sm a.$space-md;
+    border-radius: a.$radius-md;
+    border: 2px solid var(--color-info);
+    background-color: var(--color-info-bg);
+    color: var(--color-text);
+    margin-bottom: a.$space-md;
+
+    p {
+        margin: 0;
+    }
+}
+
+.alert__icon {
+    flex: none;
+    font-size: 1.3em;
+    line-height: 1.3;
+}
+
+.alert__body > * + * {
+    margin-top: a.$space-2xs;
+}
+
+.alert__title {
+    font-weight: a.$font-weight-bold;
+    font-size: a.$font-size-lg;
+}
+
+.alert--success {
+    border-color: var(--color-success);
+    background-color: var(--color-success-bg);
+}
+
+.alert--warning {
+    border-color: var(--color-warning);
+    background-color: var(--color-warning-bg);
+}
+
+.alert--danger {
+    border-color: var(--color-danger);
+    background-color: var(--color-danger-bg);
+}

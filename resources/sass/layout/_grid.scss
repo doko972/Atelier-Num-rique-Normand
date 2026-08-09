@@ -1,0 +1,70 @@
+// =============================================================================
+// Conteneurs et grilles
+// =============================================================================
+@use '../abstracts' as a;
+
+.container {
+    @include a.container;
+}
+
+.container--narrow {
+    @include a.container(a.$container-narrow);
+}
+
+.stack > * + * {
+    margin-top: a.$space-md;
+}
+
+.stack--sm > * + * {
+    margin-top: a.$space-2xs;
+}
+
+.stack--lg > * + * {
+    margin-top: a.$space-lg;
+}
+
+.grid {
+    @include a.auto-grid(17rem);
+}
+
+.grid--wide {
+    @include a.auto-grid(22rem);
+}
+
+.grid--narrow {
+    @include a.auto-grid(13rem);
+}
+
+.cluster {
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-sm;
+    align-items: center;
+}
+
+.cluster--between {
+    justify-content: space-between;
+}
+
+.split {
+    display: grid;
+    gap: a.$space-lg;
+
+    @include a.from('lg') {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
+}
+
+.split--aside {
+    @include a.from('lg') {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+        align-items: start;
+    }
+}
+
+// Empêche tout débordement horizontal (tableaux, blocs larges).
+.scroll-x {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}

@@ -1,0 +1,212 @@
+// =============================================================================
+// En-tête du site
+//
+// Sur mobile, l'en-tête tient sur une seule ligne : marque à gauche, bouton
+// de menu à droite. Le numéro de téléphone n'apparaît en pastille qu'à partir
+// de 36rem ; en dessous, il reste accessible en permanence par la barre
+// d'appel fixée en bas d'écran et par le tiroir de navigation.
+// =============================================================================
+@use '../abstracts' as a;
+
+.site-header {
+    background-color: var(--color-surface);
+    border-bottom: var(--border-width) solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: a.$z-header;
+}
+
+.site-header__inner {
+    @include a.container;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: a.$space-2xs;
+    padding-block: a.$space-2xs;
+}
+
+// -----------------------------------------------------------------------------
+// Marque
+// -----------------------------------------------------------------------------
+.site-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: a.$space-2xs;
+    // Autorise la marque à se réduire plutôt qu'à pousser le bouton de menu
+    // hors de l'écran : c'est ce débordement qui faisait chevaucher les
+    // éléments sur les petits écrans.
+    min-width: 0;
+    flex: 1 1 auto;
+    text-decoration: none;
+    color: var(--color-primary);
+    font-weight: a.$font-weight-bold;
+    line-height: 1.2;
+    padding-block: a.$space-3xs;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.site-header__logo {
+    flex: none;
+    width: 2.6rem;
+    height: 2.6rem;
+    // Le fichier fourni est carré : il ne doit jamais être étiré si une
+    // future version change de proportions.
+    object-fit: contain;
+
+    @include a.from('md') {
+        width: 3.2rem;
+        height: 3.2rem;
+    }
+}
+
+.site-header__brand-text {
+    min-width: 0;
+}
+
+.site-header__brand-name {
+    display: block;
+    font-size: a.$font-size-base;
+    // Un nom de service long est coupé proprement plutôt que de déborder.
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @include a.from('sm') {
+        font-size: a.$font-size-lg;
+        white-space: normal;
+    }
+}
+
+.site-header__brand-tagline {
+    display: none;
+    font-size: a.$font-size-xs;
+    font-weight: a.$font-weight-normal;
+    color: var(--color-text-muted);
+
+    @include a.from('md') {
+        display: block;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Actions
+// -----------------------------------------------------------------------------
+.site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: a.$space-2xs;
+    flex: none;
+}
+
+.site-header__phone {
+    // Masqué sur les très petits écrans : la barre d'appel fixe affiche le
+    // numéro en entier, et le tiroir le reprend en gros bouton.
+    display: none;
+
+    @include a.from('sm') {
+        display: inline-flex;
+        align-items: center;
+        gap: a.$space-3xs;
+        @include a.touch-target;
+        padding-inline: a.$space-xs;
+        border-radius: a.$radius-pill;
+        background-color: var(--color-secondary);
+        color: var(--color-secondary-contrast);
+        font-weight: a.$font-weight-bold;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    &:hover,
+    &:focus {
+        background-color: var(--color-secondary-dark);
+        color: var(--color-secondary-contrast);
+        text-decoration: none;
+    }
+
+    .site-header__phone-label {
+        display: none;
+
+        @include a.from('lg') {
+            display: inline;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Bouton de menu
+// -----------------------------------------------------------------------------
+.site-header__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: a.$space-2xs;
+    @include a.touch-target;
+    padding-inline: a.$space-xs;
+    border: 2px solid var(--color-primary);
+    border-radius: a.$radius-md;
+    background-color: var(--color-surface);
+    font-weight: a.$font-weight-bold;
+    font-size: a.$font-size-base;
+    color: var(--color-primary);
+
+    &:hover {
+        background-color: var(--color-primary-light);
+    }
+
+    // Au-delà de « lg », la navigation est déployée en barre : le bouton n'a
+    // plus de raison d'être.
+    @include a.from('lg') {
+        display: none;
+    }
+}
+
+// Icône « hamburger » dessinée en CSS : trois barres qui se transforment en
+// croix à l'ouverture, sans image ni police d'icônes.
+.site-header__toggle-icon {
+    position: relative;
+    display: block;
+    flex: none;
+    width: 1.5rem;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 2px;
+    transition: background-color var(--transition-fast);
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: currentColor;
+        border-radius: 2px;
+        transition: transform var(--transition-base), top var(--transition-fast);
+    }
+
+    &::before {
+        top: -0.5rem;
+    }
+
+    &::after {
+        top: 0.5rem;
+    }
+}
+
+.site-header__toggle[aria-expanded='true'] .site-header__toggle-icon {
+    // La barre centrale disparaît, les deux autres se croisent.
+    background-color: transparent;
+
+    &::before {
+        top: 0;
+        transform: rotate(45deg);
+    }
+
+    &::after {
+        top: 0;
+        transform: rotate(-45deg);
+    }
+}

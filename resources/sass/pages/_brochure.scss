@@ -1,0 +1,243 @@
+// =============================================================================
+// Présentation professionnelle, au format A4
+//
+// Ce document part par courriel ou se pose sur le bureau d'un élu. Il doit
+// donc paraître soigné à l'écran, tout en restant sobre à l'impression :
+// pas d'aplat de couleur sur pleine page, et une lisibilité conservée si le
+// destinataire imprime en noir et blanc.
+//
+// La charte du site est reprise : bleu pour les titres, vert pour les
+// accents, beige pour les fonds de tableau.
+// =============================================================================
+@use '../abstracts' as a;
+
+// La largeur, le fond et les marges sont portés par la feuille du gabarit
+// (`.print-sheet`), commune à tous les documents imprimables.
+.brochure {
+    color: var(--color-text);
+}
+
+// -----------------------------------------------------------------------------
+// En-tête
+// -----------------------------------------------------------------------------
+.brochure__header {
+    display: flex;
+    align-items: center;
+    gap: a.$space-md;
+    padding-bottom: a.$space-sm;
+    // Filet bicolore : les deux couleurs de la marque, sans aplat coûteux.
+    border-bottom: 3px solid var(--color-primary);
+    position: relative;
+}
+
+.brochure__header::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    inset-inline-start: 0;
+    width: 32%;
+    height: 3px;
+    background-color: var(--color-secondary);
+}
+
+.brochure__logo {
+    flex: none;
+    width: 30mm;
+    height: auto;
+    object-fit: contain;
+}
+
+.brochure__title {
+    font-size: a.$font-size-2xl;
+    line-height: 1.15;
+    margin: 0;
+    color: var(--color-primary);
+}
+
+.brochure__subtitle {
+    margin-top: a.$space-3xs;
+    color: var(--color-text-muted);
+    font-size: a.$font-size-base;
+}
+
+.brochure__lead {
+    margin-top: a.$space-md;
+    font-size: a.$font-size-lg;
+    max-width: none;
+}
+
+// -----------------------------------------------------------------------------
+// Sections
+// -----------------------------------------------------------------------------
+.brochure__section {
+    margin-top: a.$space-lg;
+    break-inside: avoid;
+}
+
+.brochure__section-title {
+    display: flex;
+    align-items: baseline;
+    gap: a.$space-2xs;
+    font-size: a.$font-size-xl;
+    color: var(--color-primary);
+    margin: 0 0 a.$space-3xs;
+}
+
+// Puce carrée verte : elle reste visible en niveaux de gris.
+.brochure__section-title::before {
+    content: '';
+    flex: none;
+    width: 0.6em;
+    height: 0.6em;
+    background-color: var(--color-secondary);
+    border-radius: 2px;
+}
+
+.brochure__section-intro {
+    color: var(--color-text-muted);
+    margin-bottom: a.$space-sm;
+    max-width: none;
+}
+
+// -----------------------------------------------------------------------------
+// Prestations
+// -----------------------------------------------------------------------------
+.brochure__offers {
+    display: grid;
+    gap: a.$space-2xs;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.brochure__offer {
+    break-inside: avoid;
+    padding: a.$space-2xs a.$space-sm;
+    border: 1px solid var(--color-border);
+    border-inline-start: 4px solid var(--color-primary);
+    border-radius: a.$radius-sm;
+    background-color: var(--color-surface-alt);
+}
+
+.brochure__offer--business {
+    border-inline-start-color: var(--color-secondary);
+}
+
+.brochure__offer-title {
+    font-size: a.$font-size-base;
+    color: var(--color-primary);
+    margin: 0;
+}
+
+.brochure__offer-duration {
+    display: inline-block;
+    margin-block: 1mm;
+    padding: 0.5mm 2mm;
+    border: 1px solid var(--color-border-strong);
+    border-radius: a.$radius-pill;
+    font-size: a.$font-size-xs;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-text-muted);
+}
+
+.brochure__offer-text {
+    font-size: a.$font-size-sm;
+    margin: 0;
+    max-width: none;
+}
+
+// -----------------------------------------------------------------------------
+// Modalités et secteur
+// -----------------------------------------------------------------------------
+.brochure__notes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1.5mm;
+}
+
+.brochure__notes li {
+    display: flex;
+    gap: a.$space-2xs;
+    font-size: a.$font-size-sm;
+}
+
+.brochure__notes li::before {
+    content: '✓';
+    flex: none;
+    color: var(--color-secondary);
+    font-weight: a.$font-weight-bold;
+}
+
+.brochure__coverage {
+    padding: a.$space-2xs a.$space-sm;
+    background-color: var(--color-primary-light);
+    border-radius: a.$radius-sm;
+    font-size: a.$font-size-sm;
+    max-width: none;
+}
+
+// -----------------------------------------------------------------------------
+// Contact
+// -----------------------------------------------------------------------------
+.brochure__contact {
+    margin-top: a.$space-lg;
+    padding: a.$space-sm a.$space-md;
+    border: 2px solid var(--color-primary);
+    border-radius: a.$radius-md;
+    break-inside: avoid;
+}
+
+.brochure__contact-title {
+    font-size: a.$font-size-lg;
+    color: var(--color-primary);
+    margin: 0 0 a.$space-2xs;
+}
+
+.brochure__contact-grid {
+    display: grid;
+    gap: 1mm a.$space-md;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    font-size: a.$font-size-sm;
+}
+
+.brochure__phone {
+    font-size: a.$font-size-xl;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.brochure__legal {
+    margin-top: a.$space-sm;
+    padding-top: a.$space-2xs;
+    border-top: 1px solid var(--color-border);
+    font-size: a.$font-size-xs;
+    color: var(--color-text-muted);
+    max-width: none;
+}
+
+// -----------------------------------------------------------------------------
+// Impression
+// -----------------------------------------------------------------------------
+@media print {
+    @page {
+        size: A4;
+        margin: 14mm;
+    }
+
+    // Les fonds teintés et les filets colorés portent la structure du
+    // document : sans eux, les sections se confondent. Ils sont conservés
+    // à l'impression, mais restent des surfaces réduites.
+    .brochure__header,
+    .brochure__header::after,
+    .brochure__offer,
+    .brochure__coverage,
+    .brochure__contact,
+    .brochure__section-title::before {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+}

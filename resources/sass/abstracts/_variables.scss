@@ -1,0 +1,141 @@
+// =============================================================================
+// Variables — palette, typographie, espacements, rayons, ombres
+//
+// Tous les couples couleur de texte / couleur de fond utilisés dans le site
+// respectent au minimum le ratio de contraste 4,5:1 exigé par WCAG 2.2 AA.
+// Les ratios vérifiés sont indiqués en commentaire.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Couleurs de marque
+// -----------------------------------------------------------------------------
+$color-primary: #255c75; // Bleu confiance — 7,3:1 sur blanc
+$color-primary-dark: #1a4356; // États survol / focus
+$color-primary-light: #e3edf2; // Fonds de section discrets
+$color-primary-contrast: #ffffff;
+
+$color-secondary: #3f7d6b; // Vert accompagnement — 4,8:1 sur blanc
+$color-secondary-dark: #2e5c4f;
+$color-secondary-light: #e6f0ec;
+$color-secondary-contrast: #ffffff;
+
+// Orange d'appel à l'action.
+// #d9772e (codex) ne passe pas 4,5:1 avec du texte blanc : il est réservé aux
+// éléments décoratifs et aux survols. Les boutons utilisent la version foncée.
+$color-accent: #d9772e;
+$color-accent-strong: #b35c12; // 4,7:1 sur blanc
+$color-accent-darker: #8f4a0e;
+$color-accent-light: #fbf0e5;
+$color-accent-contrast: #ffffff;
+
+// -----------------------------------------------------------------------------
+// Neutres
+// -----------------------------------------------------------------------------
+$color-surface: #ffffff;
+$color-surface-alt: #f7f3ea; // Beige chaleureux
+$color-surface-sunken: #efe9dc;
+$color-text: #252525; // 15,9:1 sur blanc
+$color-text-muted: #55524d; // 7,7:1 sur blanc — jamais plus clair
+$color-border: #d5cfc2;
+$color-border-strong: #9c958a;
+
+// -----------------------------------------------------------------------------
+// Couleurs d'état
+// -----------------------------------------------------------------------------
+$color-success: #1f6b45; // 5,9:1 sur blanc
+$color-success-bg: #e6f2eb;
+$color-warning: #8a5a00; // 5,3:1 sur blanc
+$color-warning-bg: #fdf3e0;
+$color-danger: #a3231f; // 6,2:1 sur blanc
+$color-danger-bg: #fbeceb;
+$color-info: #1c5a80; // 6,7:1 sur blanc
+$color-info-bg: #e7f1f7;
+
+$color-focus: #b35c12; // Anneau de focus très visible
+
+// -----------------------------------------------------------------------------
+// Typographie
+// -----------------------------------------------------------------------------
+$font-family-base:
+    'Atkinson Hyperlegible',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+$font-family-mono: ui-monospace, 'Cascadia Mono', 'Consolas', monospace;
+
+// Taille de base : 18 px sur ordinateur, 17 px sur mobile (codex §5).
+$font-size-root-desktop: 18px;
+$font-size-root-mobile: 17px;
+
+$font-size-xs: 0.833rem;
+$font-size-sm: 0.944rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.333rem;
+$font-size-2xl: 1.611rem;
+$font-size-3xl: 1.944rem;
+$font-size-4xl: 2.333rem;
+
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+
+$line-height-base: 1.65; // > 1,5 exigé
+$line-height-heading: 1.25;
+
+// -----------------------------------------------------------------------------
+// Espacements (échelle 4 px)
+// -----------------------------------------------------------------------------
+$space-3xs: 0.25rem;
+$space-2xs: 0.5rem;
+$space-xs: 0.75rem;
+$space-sm: 1rem;
+$space-md: 1.5rem;
+$space-lg: 2rem;
+$space-xl: 3rem;
+$space-2xl: 4rem;
+$space-3xl: 6rem;
+
+// -----------------------------------------------------------------------------
+// Mise en page
+// -----------------------------------------------------------------------------
+$container-max: 76rem;
+$container-narrow: 48rem;
+$container-padding: $space-md;
+
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 14px;
+$radius-pill: 999px;
+
+$shadow-sm: 0 1px 2px rgba(37, 37, 37, 0.08);
+$shadow-md: 0 2px 8px rgba(37, 37, 37, 0.1);
+$shadow-lg: 0 6px 20px rgba(37, 37, 37, 0.12);
+
+// Cible tactile minimale recommandée (WCAG 2.2 — Target Size AA : 24 px,
+// nous visons 48 px pour un public senior).
+$touch-target: 48px;
+
+$transition-fast: 120ms ease;
+$transition-base: 200ms ease;
+
+// -----------------------------------------------------------------------------
+// Points de rupture (approche mobile d'abord)
+// -----------------------------------------------------------------------------
+$breakpoints: (
+    'sm': 36rem,
+    'md': 48rem,
+    'lg': 62rem,
+    'xl': 75rem,
+);
+
+$z-skip-link: 100;
+$z-header: 50;
+$z-dropdown: 60;
+// Le tiroir passe au-dessus de l'en-tête collant et de la barre d'appel,
+// mais reste sous les liens d'évitement.
+$z-drawer: 90;
+$z-banner: 80;

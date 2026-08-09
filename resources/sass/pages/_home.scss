@@ -1,0 +1,70 @@
+// =============================================================================
+// Styles propres à la page d'accueil
+// =============================================================================
+@use '../abstracts' as a;
+
+.home-services__grid {
+    @include a.auto-grid(16rem);
+}
+
+.home-cta {
+    background-color: var(--color-secondary);
+    color: var(--color-secondary-contrast);
+    text-align: center;
+    padding-block: a.$space-2xl;
+
+    h2 {
+        color: var(--color-secondary-contrast);
+    }
+
+    p {
+        margin-inline: auto;
+        color: var(--color-secondary-contrast);
+        font-size: a.$font-size-lg;
+    }
+}
+
+.home-cta__actions {
+    margin-top: a.$space-lg;
+    display: flex;
+    flex-direction: column;
+    gap: a.$space-2xs;
+    align-items: stretch;
+
+    @include a.from('sm') {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .btn--outline {
+        background-color: var(--color-surface);
+    }
+}
+
+.home-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: a.$space-2xs;
+    font-size: a.$font-size-2xl;
+    font-weight: a.$font-weight-bold;
+    margin-top: a.$space-md;
+    color: var(--color-secondary-contrast);
+}
+
+// Zone d'intervention
+.coverage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-3xs;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.coverage__item {
+    padding: a.$space-3xs a.$space-2xs;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-pill;
+    font-size: a.$font-size-sm;
+}

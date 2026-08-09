@@ -1,0 +1,203 @@
+// =============================================================================
+// Cartes
+// =============================================================================
+@use '../abstracts' as a;
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-lg;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.card__media {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    width: 100%;
+    background-color: var(--color-surface-sunken);
+    border-radius: 0;
+    border: 0;
+}
+
+.card__body {
+    padding: a.$space-md;
+    display: flex;
+    flex-direction: column;
+    gap: a.$space-2xs;
+    flex: 1;
+}
+
+.card__icon {
+    width: 3rem;
+    height: 3rem;
+    color: var(--color-secondary);
+}
+
+.card__title {
+    font-size: a.$font-size-xl;
+    margin: 0;
+}
+
+// Toute la carte devient cliquable, sans casser la sélection du texte.
+.card__link {
+    text-decoration: none;
+    color: inherit;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+    }
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.card--linked {
+    position: relative;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+
+    &:hover {
+        border-color: var(--color-primary);
+        box-shadow: var(--shadow-md);
+    }
+
+    &:focus-within {
+        @include a.focus-ring;
+    }
+}
+
+.card__meta {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-3xs a.$space-sm;
+    font-size: a.$font-size-sm;
+    color: var(--color-text-muted);
+
+    li {
+        display: inline-flex;
+        align-items: center;
+        gap: a.$space-3xs;
+    }
+}
+
+.card__footer {
+    margin-top: auto;
+    padding-top: a.$space-2xs;
+}
+
+// Carte d'engagement (« À votre rythme », « Sans jugement »…)
+.pledge {
+    text-align: center;
+    padding: a.$space-md;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-lg;
+    height: 100%;
+}
+
+.pledge__icon {
+    width: 3.2rem;
+    height: 3.2rem;
+    margin-inline: auto;
+    margin-bottom: a.$space-2xs;
+    color: var(--color-secondary);
+}
+
+.pledge__title {
+    font-size: a.$font-size-lg;
+    margin-bottom: a.$space-3xs;
+}
+
+.pledge__text {
+    color: var(--color-text-muted);
+    font-size: a.$font-size-sm;
+    margin-inline: auto;
+}
+
+// Encart d'avertissement / de sécurité
+.callout {
+    padding: a.$space-md;
+    border-radius: a.$radius-md;
+    border-inline-start: 6px solid var(--color-info);
+    background-color: var(--color-info-bg);
+
+    > * + * {
+        margin-top: a.$space-2xs;
+    }
+}
+
+.callout__title {
+    display: flex;
+    align-items: center;
+    gap: a.$space-2xs;
+    font-size: a.$font-size-lg;
+    color: var(--color-info);
+    margin: 0;
+}
+
+.callout--warning {
+    border-color: var(--color-warning);
+    background-color: var(--color-warning-bg);
+
+    .callout__title {
+        color: var(--color-warning);
+    }
+}
+
+.callout--danger {
+    border-color: var(--color-danger);
+    background-color: var(--color-danger-bg);
+
+    .callout__title {
+        color: var(--color-danger);
+    }
+}
+
+.callout--success {
+    border-color: var(--color-success);
+    background-color: var(--color-success-bg);
+
+    .callout__title {
+        color: var(--color-success);
+    }
+}
+
+// Liste « ce que je peux faire / ce que je ne peux pas faire »
+.check-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+        display: flex;
+        align-items: flex-start;
+        gap: a.$space-2xs;
+        padding-block: a.$space-3xs;
+    }
+
+    li::before {
+        flex: none;
+        font-weight: a.$font-weight-bold;
+        font-size: 1.1em;
+        line-height: 1.4;
+    }
+}
+
+.check-list--yes li::before {
+    content: '✓';
+    color: var(--color-success);
+}
+
+.check-list--no li::before {
+    content: '✗';
+    color: var(--color-danger);
+}

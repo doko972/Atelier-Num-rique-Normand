@@ -1,0 +1,259 @@
+// =============================================================================
+// Formulaires — labels visibles, aides explicites, erreurs près du champ
+// =============================================================================
+@use '../abstracts' as a;
+
+.form {
+    max-width: 46rem;
+}
+
+.form__intro {
+    margin-bottom: a.$space-lg;
+}
+
+.fieldset {
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-md;
+    padding: a.$space-md;
+    margin-bottom: a.$space-lg;
+    background-color: var(--color-surface);
+}
+
+.fieldset__legend {
+    font-size: a.$font-size-lg;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-primary);
+    padding-inline: a.$space-2xs;
+}
+
+.field {
+    margin-bottom: a.$space-md;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.field__label {
+    display: block;
+    font-weight: a.$font-weight-bold;
+    margin-bottom: a.$space-3xs;
+}
+
+.field__hint {
+    display: block;
+    font-size: a.$font-size-sm;
+    color: var(--color-text-muted);
+    margin-bottom: a.$space-3xs;
+}
+
+.field__control {
+    display: block;
+    width: 100%;
+    min-height: a.$touch-target;
+    padding: a.$space-2xs a.$space-xs;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 2px solid var(--color-border-strong);
+    border-radius: a.$radius-md;
+    transition: border-color var(--transition-fast);
+
+    &::placeholder {
+        color: var(--color-text-muted);
+        opacity: 1;
+    }
+
+    &:hover {
+        border-color: var(--color-primary);
+    }
+
+    &:disabled {
+        background-color: var(--color-surface-sunken);
+        cursor: not-allowed;
+    }
+}
+
+textarea.field__control {
+    min-height: 8rem;
+    resize: vertical;
+}
+
+select.field__control {
+    // Flèche dessinée en CSS pour éviter toute dépendance externe.
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+        linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+        calc(100% - 1.25rem) center,
+        calc(100% - 0.8rem) center;
+    background-size: 0.45rem 0.45rem;
+    background-repeat: no-repeat;
+    padding-inline-end: a.$space-xl;
+}
+
+// État d'erreur : bordure épaisse + icône + message, jamais la couleur seule.
+.field--invalid {
+    .field__control {
+        border-color: var(--color-danger);
+        border-width: 3px;
+    }
+}
+
+.field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: a.$space-3xs;
+    margin-top: a.$space-3xs;
+    padding: a.$space-3xs a.$space-2xs;
+    background-color: var(--color-danger-bg);
+    border-inline-start: 4px solid var(--color-danger);
+    border-radius: 0 a.$radius-sm a.$radius-sm 0;
+    color: var(--color-danger);
+    font-weight: a.$font-weight-bold;
+
+    &::before {
+        content: '⚠';
+        flex: none;
+        font-size: 1.1em;
+    }
+}
+
+// -- Cases à cocher et boutons radio ----------------------------------------
+.choice {
+    display: flex;
+    align-items: flex-start;
+    gap: a.$space-2xs;
+    padding: a.$space-2xs;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-md;
+    background-color: var(--color-surface);
+    cursor: pointer;
+    min-height: a.$touch-target;
+
+    & + .choice {
+        margin-top: a.$space-2xs;
+    }
+
+    &:hover {
+        border-color: var(--color-primary);
+        background-color: var(--color-primary-light);
+    }
+
+    &:has(input:checked) {
+        border-color: var(--color-primary);
+        border-width: 2px;
+        background-color: var(--color-primary-light);
+    }
+}
+
+.choice__input {
+    flex: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0.15rem;
+    accent-color: var(--color-primary);
+}
+
+.choice__text {
+    display: block;
+}
+
+.choice__label {
+    font-weight: a.$font-weight-bold;
+}
+
+.choice__description {
+    display: block;
+    font-size: a.$font-size-sm;
+    color: var(--color-text-muted);
+}
+
+.choice-list {
+    display: grid;
+    gap: a.$space-2xs;
+
+    @include a.from('md') {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        .choice + .choice {
+            margin-top: 0;
+        }
+    }
+}
+
+// -- Récapitulatif d'erreurs en haut de formulaire ---------------------------
+.form-errors {
+    margin-bottom: a.$space-lg;
+    padding: a.$space-md;
+    background-color: var(--color-danger-bg);
+    border: 2px solid var(--color-danger);
+    border-radius: a.$radius-md;
+
+    h2 {
+        font-size: a.$font-size-lg;
+        color: var(--color-danger);
+        margin-bottom: a.$space-2xs;
+    }
+
+    ul {
+        margin: 0;
+        padding-inline-start: a.$space-md;
+    }
+
+    a {
+        color: var(--color-danger);
+        font-weight: a.$font-weight-bold;
+    }
+}
+
+// -- Champ anti-spam invisible (honeypot) ------------------------------------
+// Masqué à l'écran mais aussi aux lecteurs d'écran (aria-hidden côté HTML)
+// afin de ne pas dérouter les utilisateurs.
+.honeypot {
+    position: absolute !important;
+    left: -9999px !important;
+    top: auto !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+}
+
+.form__actions {
+    display: flex;
+    flex-direction: column;
+    gap: a.$space-2xs;
+    margin-top: a.$space-lg;
+
+    @include a.from('sm') {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.form__required-note {
+    font-size: a.$font-size-sm;
+    color: var(--color-text-muted);
+    margin-bottom: a.$space-md;
+}
+
+// Alternative téléphonique toujours proposée (codex §25).
+.form__phone-fallback {
+    margin-top: a.$space-lg;
+    padding: a.$space-md;
+    background-color: var(--color-secondary-light);
+    border-inline-start: 5px solid var(--color-secondary);
+    border-radius: 0 a.$radius-md a.$radius-md 0;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-2xs;
+    align-items: flex-end;
+    margin-bottom: a.$space-md;
+
+    .field {
+        margin-bottom: 0;
+        flex: 1 1 12rem;
+    }
+}

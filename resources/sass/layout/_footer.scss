@@ -1,0 +1,75 @@
+// =============================================================================
+// Pied de page
+// =============================================================================
+@use '../abstracts' as a;
+
+.site-footer {
+    margin-top: auto;
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+    padding-block: a.$space-xl a.$space-md;
+
+    a {
+        color: var(--color-primary-contrast);
+    }
+
+    h2,
+    h3 {
+        color: var(--color-primary-contrast);
+        font-size: a.$font-size-lg;
+        margin-bottom: a.$space-2xs;
+    }
+}
+
+.site-footer__grid {
+    @include a.container;
+    @include a.auto-grid(15rem, a.$space-lg);
+}
+
+.site-footer__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li + li {
+        margin-top: a.$space-3xs;
+    }
+
+    a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.4rem;
+    }
+}
+
+.site-footer__phone {
+    font-size: a.$font-size-xl;
+    font-weight: a.$font-weight-bold;
+    display: inline-block;
+    margin-block: a.$space-3xs;
+}
+
+.site-footer__bottom {
+    @include a.container;
+    margin-top: a.$space-lg;
+    padding-top: a.$space-md;
+    border-top: var(--border-width) solid rgba(255, 255, 255, 0.35);
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-2xs a.$space-md;
+    justify-content: space-between;
+    font-size: a.$font-size-sm;
+}
+
+.site-footer__legal {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-2xs a.$space-md;
+    padding: 0;
+    margin: 0;
+}
+
+:root[data-contrast='high'] .site-footer {
+    border-top: 3px solid var(--color-text);
+}

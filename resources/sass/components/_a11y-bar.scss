@@ -1,0 +1,210 @@
+// =============================================================================
+// Barre d'accessibilité, barre d'appel mobile et bandeau cookies
+// =============================================================================
+@use '../abstracts' as a;
+
+.a11y-bar {
+    background-color: var(--color-primary-dark);
+    color: #ffffff;
+    font-size: a.$font-size-sm;
+}
+
+.a11y-bar__inner {
+    @include a.container;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    // Sur mobile, la barre est centrée et compacte ; sur grand écran, elle se
+    // range à droite pour ne pas concurrencer la marque.
+    justify-content: center;
+    gap: a.$space-3xs;
+    padding-block: a.$space-3xs;
+
+    @include a.from('md') {
+        justify-content: flex-end;
+        gap: a.$space-3xs a.$space-md;
+    }
+}
+
+// Le titre de la barre n'apporte rien visuellement sur mobile, où la place
+// est comptée, mais il reste indispensable au groupe de boutons.
+.a11y-bar__label {
+    font-weight: a.$font-weight-bold;
+
+    @include a.until('md') {
+        @include a.visually-hidden;
+    }
+}
+
+.a11y-bar__size-label {
+    @include a.until('md') {
+        @include a.visually-hidden;
+    }
+}
+
+// Partie de libellé masquée visuellement sur mobile, mais conservée dans le
+// nom accessible du bouton : `display: none` l'aurait retirée de l'arbre
+// d'accessibilité, ce qui aurait appauvri l'annonce du lecteur d'écran.
+.a11y-bar__btn-extra {
+    @include a.until('md') {
+        @include a.visually-hidden;
+    }
+}
+
+.a11y-bar__group {
+    display: flex;
+    align-items: center;
+    gap: a.$space-3xs;
+}
+
+.a11y-bar__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: a.$space-3xs;
+    min-height: 2.5rem;
+    padding-inline: a.$space-2xs;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: a.$radius-sm;
+    background-color: transparent;
+    color: #ffffff;
+    font-size: a.$font-size-sm;
+    font-weight: a.$font-weight-bold;
+    white-space: nowrap;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        border-color: #ffffff;
+    }
+
+    &:focus-visible {
+        outline: 3px solid #ffffff;
+        outline-offset: 2px;
+    }
+
+    &[aria-pressed='true'] {
+        background-color: #ffffff;
+        color: var(--color-primary-dark);
+        border-color: #ffffff;
+    }
+
+    &[aria-pressed='true']::before {
+        content: '✓ ';
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+// Les boutons A− et A+ restent carrés et faciles à viser.
+.a11y-bar__btn--icon {
+    min-width: 2.5rem;
+    padding-inline: a.$space-3xs;
+}
+
+// -----------------------------------------------------------------------------
+// Barre d'appel fixe en bas d'écran sur mobile (codex §31 et §35)
+//
+// C'est elle qui garantit la visibilité permanente du numéro sur mobile :
+// l'en-tête, lui, défile avec la page.
+// -----------------------------------------------------------------------------
+.call-bar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: a.$z-banner;
+    display: flex;
+    background-color: var(--color-accent-strong);
+    border-top: 3px solid var(--color-accent-darker);
+    box-shadow: 0 -2px 10px rgba(37, 37, 37, 0.2);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+
+    @include a.from('lg') {
+        display: none;
+    }
+}
+
+.call-bar__link {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: a.$space-2xs;
+    min-height: 3.5rem;
+    padding-inline: a.$space-2xs;
+    color: var(--color-accent-contrast);
+    font-weight: a.$font-weight-bold;
+    font-size: a.$font-size-lg;
+    text-decoration: none;
+    text-align: center;
+
+    &:hover,
+    &:focus {
+        color: var(--color-accent-contrast);
+        background-color: var(--color-accent-darker);
+        text-decoration: none;
+    }
+}
+
+// Le verbe est masqué sur les écrans très étroits pour laisser toute la place
+// au numéro, qui est l'information utile.
+.call-bar__verb {
+    @media (max-width: 22.5rem) {
+        @include a.visually-hidden;
+    }
+}
+
+// Réserve la place de la barre d'appel pour ne rien masquer en bas de page.
+body.has-call-bar {
+    padding-bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+
+    @include a.from('lg') {
+        padding-bottom: 0;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Bandeau cookies — n'apparaît que si un traceur non essentiel est configuré
+// -----------------------------------------------------------------------------
+.cookie-banner {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: calc(#{a.$z-banner} + 1);
+    background-color: var(--color-surface);
+    border-top: 3px solid var(--color-primary);
+    box-shadow: 0 -2px 14px rgba(37, 37, 37, 0.18);
+    padding: a.$space-md 0;
+    max-height: 80vh;
+    overflow-y: auto;
+
+    &[hidden] {
+        display: none;
+    }
+}
+
+.cookie-banner__inner {
+    @include a.container;
+    display: flex;
+    flex-direction: column;
+    gap: a.$space-sm;
+
+    @include a.from('md') {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.cookie-banner__actions {
+    display: flex;
+    flex-direction: column;
+    gap: a.$space-2xs;
+    flex: none;
+
+    @include a.from('sm') {
+        flex-direction: row;
+    }
+}

@@ -1,0 +1,102 @@
+// =============================================================================
+// Mixins réutilisables
+// =============================================================================
+@use 'sass:map';
+@use 'variables' as v;
+
+/// Média-requête mobile d'abord.
+/// @param {String} $name - clé de $breakpoints
+@mixin from($name) {
+    $value: map.get(v.$breakpoints, $name);
+
+    @if $value == null {
+        @error "Point de rupture inconnu : #{$name}.";
+    }
+
+    @media (min-width: $value) {
+        @content;
+    }
+}
+
+/// Média-requête plafonnée, réservée aux cas où le style ne concerne que les
+/// petits écrans — le tiroir de navigation, par exemple, qui n'existe pas
+/// au-delà du point de rupture « lg ».
+/// @param {String} $name - clé de $breakpoints
+@mixin until($name) {
+    $value: map.get(v.$breakpoints, $name);
+
+    @if $value == null {
+        @error "Point de rupture inconnu : #{$name}.";
+    }
+
+    // Négation exacte de `from()` : aucun risque de chevauchement ni de trou
+    // d'un pixel entre les deux, contrairement à un `max-width` calculé.
+    @media not all and (min-width: $value) {
+        @content;
+    }
+}
+
+/// Conteneur centré.
+///
+/// La marge latérale est réduite sur les très petits écrans : 24 px de chaque
+/// côté amputaient un tiers de la largeur utile d'un téléphone étroit.
+@mixin container($max: v.$container-max) {
+    width: 100%;
+    max-width: $max;
+    margin-inline: auto;
+    padding-inline: v.$space-sm;
+
+    @media (min-width: 30rem) {
+        padding-inline: v.$container-padding;
+    }
+}
+
+/// Masque visuellement sans masquer aux lecteurs d'écran.
+@mixin visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/// Anneau de focus systématique et très visible.
+@mixin focus-ring($color: v.$color-focus, $offset: 3px) {
+    outline: 3px solid $color;
+    outline-offset: $offset;
+    border-radius: v.$radius-sm;
+}
+
+/// Cible tactile confortable.
+@mixin touch-target($size: v.$touch-target) {
+    min-height: $size;
+    min-width: $size;
+}
+
+/// Limite un texte à N lignes.
+@mixin line-clamp($lines: 3) {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/// Grille auto-adaptative sans média-requête.
+@mixin auto-grid($min: 16rem, $gap: v.$space-md) {
+    display: grid;
+    gap: $gap;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, $min), 1fr));
+}
+
+/// Applique un style uniquement lorsque les animations sont autorisées.
+@mixin motion-safe {
+    @media (prefers-reduced-motion: no-preference) {
+        :root:not([data-motion='reduced']) & {
+            @content;
+        }
+    }
+}

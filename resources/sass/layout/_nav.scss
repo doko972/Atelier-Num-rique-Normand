@@ -1,0 +1,269 @@
+// =============================================================================
+// Navigation principale et tiroir mobile
+//
+// Amélioration progressive stricte : sans JavaScript, le tiroir se comporte
+// comme une navigation empilée, visible et complète. C'est le script qui pose
+// l'attribut `data-enhanced`, et lui seul déclenche le comportement de tiroir.
+// Aucun visiteur ne peut donc se retrouver devant un menu injoignable.
+// =============================================================================
+@use '../abstracts' as a;
+
+.drawer {
+    background-color: var(--color-surface);
+    border-top: var(--border-width) solid var(--color-border);
+
+    @include a.from('lg') {
+        border-top: 0;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Comportement de tiroir — uniquement avec JavaScript et sous « lg »
+// -----------------------------------------------------------------------------
+.drawer[data-enhanced='true'] {
+    @include a.until('lg') {
+        position: fixed;
+        inset: 0;
+        z-index: a.$z-drawer;
+        border-top: 0;
+        background-color: transparent;
+
+        // `visibility` retire réellement le tiroir de l'ordre de tabulation
+        // quand il est fermé : une simple opacité laisserait les liens
+        // atteignables au clavier, ce qui perdrait complètement l'utilisateur.
+        visibility: hidden;
+        transition: visibility 0s linear var(--transition-base);
+
+        &[data-open='true'] {
+            visibility: visible;
+            transition-delay: 0s;
+        }
+    }
+}
+
+.drawer__backdrop {
+    display: none;
+}
+
+.drawer[data-enhanced='true'] .drawer__backdrop {
+    @include a.until('lg') {
+        display: block;
+        position: absolute;
+        inset: 0;
+        background-color: rgba(26, 67, 86, 0.55);
+        opacity: 0;
+        transition: opacity var(--transition-base);
+        // Le curseur indique que cliquer à côté referme.
+        cursor: pointer;
+    }
+}
+
+.drawer[data-enhanced='true'][data-open='true'] .drawer__backdrop {
+    opacity: 1;
+}
+
+// -----------------------------------------------------------------------------
+// Panneau
+// -----------------------------------------------------------------------------
+.drawer[data-enhanced='true'] .drawer__panel {
+    @include a.until('lg') {
+        position: absolute;
+        inset-block: 0;
+        inset-inline-end: 0;
+        // Jamais plus large que l'écran, et toujours une bande visible du
+        // fond : la personne comprend qu'il s'agit d'un panneau superposé.
+        width: min(21rem, 86vw);
+        display: flex;
+        flex-direction: column;
+        background-color: var(--color-surface);
+        box-shadow: -4px 0 24px rgba(37, 37, 37, 0.25);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        transform: translateX(100%);
+        transition: transform var(--transition-base);
+        // Compense l'encoche et la barre système sur les téléphones récents.
+        padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+}
+
+.drawer[data-enhanced='true'][data-open='true'] .drawer__panel {
+    @include a.until('lg') {
+        transform: translateX(0);
+    }
+}
+
+// -----------------------------------------------------------------------------
+// En-tête du panneau — visible seulement en mode tiroir
+// -----------------------------------------------------------------------------
+.drawer__header {
+    display: none;
+}
+
+.drawer[data-enhanced='true'] .drawer__header {
+    @include a.until('lg') {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: a.$space-2xs;
+        padding: a.$space-2xs a.$space-sm;
+        border-bottom: var(--border-width) solid var(--color-border);
+        background-color: var(--color-primary-light);
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+}
+
+.drawer__title {
+    font-size: a.$font-size-lg;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-primary);
+    margin: 0;
+}
+
+// Le bouton porte le mot « Fermer » : une croix seule n'est pas comprise de
+// tout le monde, et reste difficile à viser.
+.drawer__close {
+    display: inline-flex;
+    align-items: center;
+    gap: a.$space-3xs;
+    @include a.touch-target;
+    padding-inline: a.$space-xs;
+    border: 2px solid var(--color-primary);
+    border-radius: a.$radius-md;
+    background-color: var(--color-surface);
+    color: var(--color-primary);
+    font-weight: a.$font-weight-bold;
+
+    &:hover {
+        background-color: var(--color-primary);
+        color: var(--color-primary-contrast);
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Liste des liens
+// -----------------------------------------------------------------------------
+.main-nav__list {
+    list-style: none;
+    margin: 0;
+    padding: a.$space-2xs;
+    display: flex;
+    flex-direction: column;
+    gap: a.$space-3xs;
+
+    @include a.from('lg') {
+        @include a.container;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: stretch;
+        gap: a.$space-3xs a.$space-2xs;
+        padding-block: 0;
+    }
+}
+
+.main-nav__link {
+    display: flex;
+    align-items: center;
+    @include a.touch-target;
+    padding-inline: a.$space-sm;
+    border-radius: a.$radius-md;
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: a.$font-weight-bold;
+    border-inline-start: 4px solid transparent;
+
+    @include a.from('lg') {
+        padding-inline: a.$space-xs;
+        border-inline-start: 0;
+        border-bottom: 4px solid transparent;
+        border-radius: a.$radius-md a.$radius-md 0 0;
+    }
+
+    &:hover {
+        background-color: var(--color-primary-light);
+        color: var(--color-primary-dark);
+        text-decoration: none;
+    }
+}
+
+// L'état actif est signalé par la couleur, par une bordure et par
+// aria-current : jamais par la seule couleur.
+.main-nav__link[aria-current='page'] {
+    color: var(--color-primary-dark);
+    background-color: var(--color-primary-light);
+    border-color: var(--color-accent-strong);
+}
+
+.main-nav__link--cta {
+    background-color: var(--color-accent-strong);
+    color: var(--color-accent-contrast);
+    justify-content: center;
+
+    @include a.from('lg') {
+        justify-content: flex-start;
+    }
+
+    &:hover {
+        background-color: var(--color-accent-darker);
+        color: var(--color-accent-contrast);
+    }
+
+    &[aria-current='page'] {
+        background-color: var(--color-accent-darker);
+        color: var(--color-accent-contrast);
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Pied du panneau : rappel du téléphone et réglages d'affichage
+// -----------------------------------------------------------------------------
+.drawer__footer {
+    display: none;
+}
+
+.drawer[data-enhanced='true'] .drawer__footer {
+    @include a.until('lg') {
+        display: block;
+        margin-top: auto;
+        padding: a.$space-sm;
+        border-top: var(--border-width) solid var(--color-border);
+        background-color: var(--color-surface-alt);
+    }
+}
+
+.drawer__phone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: a.$space-2xs;
+    min-height: 3.2rem;
+    border-radius: a.$radius-md;
+    background-color: var(--color-secondary);
+    color: var(--color-secondary-contrast);
+    font-weight: a.$font-weight-bold;
+    font-size: a.$font-size-lg;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        background-color: var(--color-secondary-dark);
+        color: var(--color-secondary-contrast);
+        text-decoration: none;
+    }
+}
+
+.drawer__note {
+    margin-top: a.$space-2xs;
+    font-size: a.$font-size-sm;
+    color: var(--color-text-muted);
+}
+
+// -----------------------------------------------------------------------------
+// Verrouillage du défilement pendant l'ouverture
+// -----------------------------------------------------------------------------
+body.has-drawer-open {
+    @include a.until('lg') {
+        overflow: hidden;
+    }
+}

@@ -1,0 +1,19 @@
+// =============================================================================
+// Feuille de style principale — Conseiller Numérique
+//
+// Architecture 7-1 :
+//   abstracts/  variables, mixins (ne produit aucun CSS)
+//   base/       jetons, réinitialisation, typographie, accessibilité, impression
+//   layout/     conteneurs, en-tête, navigation, pied de page, back-office
+//   components/ boutons, formulaires, cartes, tableaux, ateliers…
+//   pages/      styles spécifiques à une page
+// =============================================================================
+
+// Police auto-hébergée : aucun appel à un service externe (RGPD + CSP stricte).
+@use '@fontsource/atkinson-hyperlegible/latin-400.css';
+@use '@fontsource/atkinson-hyperlegible/latin-700.css';
+
+@use 'base';
+@use 'layout';
+@use 'components';
+@use 'pages';

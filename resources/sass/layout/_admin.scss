@@ -1,0 +1,292 @@
+// =============================================================================
+// Back-office — menu latéral, en-tête, tableau de bord
+// =============================================================================
+@use '../abstracts' as a;
+
+.admin {
+    display: grid;
+    min-height: 100vh;
+    grid-template-columns: 1fr;
+
+    @include a.from('lg') {
+        grid-template-columns: 17rem minmax(0, 1fr);
+    }
+}
+
+.admin-sidebar {
+    background-color: var(--color-primary-dark);
+    color: #ffffff;
+    padding: a.$space-sm;
+    display: flex;
+    flex-direction: column;
+    gap: a.$space-md;
+
+    a {
+        color: #ffffff;
+    }
+
+    @include a.from('lg') {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+    }
+}
+
+// Sur le fond bleu foncé du menu, un logo sombre est posé sur une pastille
+// claire. La déclinaison blanche, elle, se passe de ce support.
+.admin-sidebar__logo {
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
+    background-color: #ffffff;
+    border-radius: a.$radius-sm;
+    padding: 2px;
+}
+
+.admin-sidebar__logo--transparent {
+    background-color: transparent;
+    padding: 0;
+    width: 2.2rem;
+    height: 2.2rem;
+}
+
+.admin-sidebar__brand {
+    display: flex;
+    align-items: center;
+    gap: a.$space-2xs;
+    font-weight: a.$font-weight-bold;
+    text-decoration: none;
+    padding: a.$space-2xs;
+    line-height: 1.2;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.admin-sidebar__section-title {
+    font-size: a.$font-size-xs;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.75);
+    padding-inline: a.$space-2xs;
+    margin-bottom: a.$space-3xs;
+}
+
+.admin-sidebar__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 2px;
+}
+
+.admin-sidebar__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: a.$space-2xs;
+    min-height: 2.8rem;
+    padding-inline: a.$space-2xs;
+    border-radius: a.$radius-sm;
+    text-decoration: none;
+    font-weight: a.$font-weight-bold;
+    font-size: a.$font-size-sm;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.14);
+        text-decoration: none;
+    }
+
+    &[aria-current='page'] {
+        background-color: #ffffff;
+        color: var(--color-primary-dark);
+    }
+}
+
+.admin-sidebar__count {
+    flex: none;
+    min-width: 1.7rem;
+    padding-inline: 0.4rem;
+    text-align: center;
+    border-radius: a.$radius-pill;
+    background-color: var(--color-accent-strong);
+    color: #ffffff;
+    font-size: a.$font-size-xs;
+}
+
+.admin-sidebar__link[aria-current='page'] .admin-sidebar__count {
+    background-color: var(--color-accent-darker);
+}
+
+.admin-main {
+    background-color: var(--color-surface-alt);
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: a.$space-2xs;
+    padding: a.$space-2xs a.$space-md;
+    background-color: var(--color-surface);
+    border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.admin-topbar__user {
+    display: flex;
+    align-items: center;
+    gap: a.$space-2xs;
+    font-size: a.$font-size-sm;
+}
+
+.admin-content {
+    padding: a.$space-md;
+    flex: 1;
+
+    @include a.from('md') {
+        padding: a.$space-lg;
+    }
+}
+
+.admin-page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: a.$space-sm;
+    margin-bottom: a.$space-md;
+
+    h1 {
+        font-size: a.$font-size-2xl;
+    }
+
+    p {
+        color: var(--color-text-muted);
+        margin-top: a.$space-3xs;
+    }
+}
+
+.admin-panel {
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-md;
+    padding: a.$space-md;
+
+    & + & {
+        margin-top: a.$space-md;
+    }
+}
+
+.admin-panel__title {
+    font-size: a.$font-size-lg;
+    margin-bottom: a.$space-2xs;
+}
+
+// -- Tuiles du tableau de bord ----------------------------------------------
+.stat-grid {
+    @include a.auto-grid(12rem, a.$space-sm);
+    margin-bottom: a.$space-lg;
+}
+
+.stat {
+    display: block;
+    padding: a.$space-md;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-inline-start: 5px solid var(--color-primary);
+    border-radius: a.$radius-md;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+        border-color: var(--color-primary);
+        border-inline-start-color: var(--color-primary);
+        box-shadow: var(--shadow-sm);
+        text-decoration: none;
+    }
+}
+
+.stat--alert {
+    border-inline-start-color: var(--color-accent-strong);
+}
+
+.stat--success {
+    border-inline-start-color: var(--color-success);
+}
+
+.stat__value {
+    display: block;
+    font-size: a.$font-size-3xl;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-primary);
+    line-height: 1.1;
+}
+
+.stat__label {
+    display: block;
+    font-size: a.$font-size-sm;
+    color: var(--color-text-muted);
+    margin-top: a.$space-3xs;
+}
+
+// -- Journal d'activité ------------------------------------------------------
+.timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-inline-start: 2px solid var(--color-border);
+    padding-inline-start: a.$space-md;
+
+    li {
+        position: relative;
+        padding-block: a.$space-2xs;
+    }
+
+    li::before {
+        content: '';
+        position: absolute;
+        inset-inline-start: calc(-1 * #{a.$space-md} - 6px);
+        top: 1.2rem;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: var(--color-secondary);
+    }
+}
+
+.timeline__meta {
+    display: block;
+    font-size: a.$font-size-xs;
+    color: var(--color-text-muted);
+}
+
+// -- Page de connexion -------------------------------------------------------
+.auth-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: a.$space-md;
+    background-color: var(--color-primary-light);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 28rem;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-lg;
+    padding: a.$space-lg;
+    box-shadow: var(--shadow-md);
+}
+
+.auth-card__title {
+    font-size: a.$font-size-2xl;
+    margin-bottom: a.$space-2xs;
+}

@@ -1,0 +1,79 @@
+// =============================================================================
+// Impression — les fiches pratiques doivent rester lisibles sur papier.
+// =============================================================================
+@use '../abstracts' as a;
+
+@media print {
+    :root {
+        --color-text: #000000;
+        --color-text-muted: #000000;
+        --color-primary: #000000;
+        --color-surface: #ffffff;
+        --color-surface-alt: #ffffff;
+        --color-surface-sunken: #ffffff;
+        --color-border: #666666;
+    }
+
+    @page {
+        margin: 1.5cm;
+    }
+
+    html {
+        font-size: 12pt;
+    }
+
+    body {
+        background: #ffffff;
+        color: #000000;
+    }
+
+    .site-header,
+    .site-footer,
+    .a11y-bar,
+    .cookie-banner,
+    .breadcrumb,
+    .pagination,
+    .btn,
+    .admin-sidebar,
+    form,
+    nav {
+        display: none !important;
+    }
+
+    .printable,
+    .printable * {
+        visibility: visible;
+    }
+
+    // Affiche l'adresse réelle des liens pour une lecture papier utile.
+    .prose a[href^='http']::after {
+        content: ' (' attr(href) ')';
+        font-size: 0.85em;
+        word-break: break-all;
+    }
+
+    h1,
+    h2,
+    h3 {
+        break-after: avoid;
+    }
+
+    li,
+    figure,
+    .card {
+        break-inside: avoid;
+    }
+
+    .print-contact {
+        display: block !important;
+        margin-top: a.$space-lg;
+        padding-top: a.$space-sm;
+        border-top: 1px solid #000000;
+        font-size: 11pt;
+    }
+}
+
+// Bloc de contact réservé à la version imprimée.
+.print-contact {
+    display: none;
+}

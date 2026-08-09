@@ -1,0 +1,84 @@
+// =============================================================================
+// Gabarit des documents destinés au papier
+//
+// À l'écran, la page figure une feuille posée sur un fond neutre. La barre
+// d'outils partage exactement la largeur de cette feuille : un bouton décalé
+// par rapport au document sur lequel il agit trahit un assemblage approximatif.
+//
+// À l'impression, la feuille reprend toute la page et la barre disparaît.
+// =============================================================================
+@use '../abstracts' as a;
+
+.print-body {
+    background-color: var(--color-surface-alt);
+}
+
+.print-page {
+    // Largeur du document, redéfinie par le format déclaré.
+    --sheet-width: 190mm;
+
+    width: 100%;
+    max-width: var(--sheet-width);
+    margin-inline: auto;
+    padding-block: a.$space-lg;
+    // Marge latérale sur les écrans plus étroits que la feuille.
+    padding-inline: a.$space-sm;
+}
+
+.print-page--a5 {
+    --sheet-width: 148mm;
+}
+
+// -----------------------------------------------------------------------------
+// Barre d'outils
+// -----------------------------------------------------------------------------
+.print-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: a.$space-2xs;
+    margin-bottom: a.$space-md;
+}
+
+// -----------------------------------------------------------------------------
+// La feuille
+// -----------------------------------------------------------------------------
+.print-sheet {
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-sm;
+    box-shadow: var(--shadow-md);
+    padding: a.$space-lg;
+
+    @include a.from('sm') {
+        padding: a.$space-xl;
+    }
+}
+
+.print-notes {
+    margin-top: a.$space-md;
+}
+
+// -----------------------------------------------------------------------------
+// Impression
+// -----------------------------------------------------------------------------
+@media print {
+    .print-body {
+        background-color: #ffffff;
+    }
+
+    .print-page {
+        max-width: none;
+        padding: 0;
+    }
+
+    // Les marges viennent de @page : la feuille ne doit plus en ajouter, ni
+    // afficher de bordure ou d'ombre, qui n'ont de sens qu'à l'écran.
+    .print-sheet {
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0;
+        background-color: transparent;
+    }
+}

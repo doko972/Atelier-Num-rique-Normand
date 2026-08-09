@@ -1,0 +1,152 @@
+// =============================================================================
+// Boutons — grands, contrastés, faciles à viser
+// =============================================================================
+@use '../abstracts' as a;
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: a.$space-2xs;
+    @include a.touch-target;
+    padding: a.$space-2xs a.$space-md;
+    border: var(--border-width) solid transparent;
+    border-radius: a.$radius-md;
+    font-size: a.$font-size-base;
+    font-weight: a.$font-weight-bold;
+    line-height: 1.3;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    &:disabled,
+    &[aria-disabled='true'] {
+        opacity: 0.55;
+        cursor: not-allowed;
+    }
+}
+
+.btn__icon {
+    flex: none;
+    width: 1.25em;
+    height: 1.25em;
+}
+
+// -- Variantes ---------------------------------------------------------------
+.btn--primary {
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+    border-color: var(--color-primary);
+
+    &:hover:not(:disabled) {
+        background-color: var(--color-primary-dark);
+        border-color: var(--color-primary-dark);
+        color: var(--color-primary-contrast);
+    }
+}
+
+.btn--secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-secondary-contrast);
+    border-color: var(--color-secondary);
+
+    &:hover:not(:disabled) {
+        background-color: var(--color-secondary-dark);
+        border-color: var(--color-secondary-dark);
+        color: var(--color-secondary-contrast);
+    }
+}
+
+// Appel à l'action principal (orange foncé : 4,7:1 avec du texte blanc).
+.btn--accent {
+    background-color: var(--color-accent-strong);
+    color: var(--color-accent-contrast);
+    border-color: var(--color-accent-strong);
+
+    &:hover:not(:disabled) {
+        background-color: var(--color-accent-darker);
+        border-color: var(--color-accent-darker);
+        color: var(--color-accent-contrast);
+    }
+}
+
+.btn--outline {
+    background-color: var(--color-surface);
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+
+    &:hover:not(:disabled) {
+        background-color: var(--color-primary-light);
+        color: var(--color-primary-dark);
+    }
+}
+
+.btn--ghost {
+    background-color: transparent;
+    color: var(--color-primary);
+    border-color: transparent;
+
+    &:hover:not(:disabled) {
+        background-color: var(--color-primary-light);
+    }
+}
+
+.btn--danger {
+    background-color: var(--color-danger);
+    color: #ffffff;
+    border-color: var(--color-danger);
+
+    &:hover:not(:disabled) {
+        background-color: #7c1a17;
+        border-color: #7c1a17;
+        color: #ffffff;
+    }
+}
+
+// -- Tailles -----------------------------------------------------------------
+.btn--lg {
+    font-size: a.$font-size-lg;
+    padding: a.$space-xs a.$space-lg;
+    min-height: 3.4rem;
+}
+
+.btn--sm {
+    font-size: a.$font-size-sm;
+    min-height: 2.5rem;
+    padding: a.$space-3xs a.$space-xs;
+}
+
+// Sur mobile, les boutons principaux occupent toute la largeur.
+.btn--block {
+    width: 100%;
+}
+
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: a.$space-2xs;
+
+    @include a.from('sm') {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        @include a.from('sm') {
+            width: auto;
+        }
+    }
+}
+
+// Lien qui se comporte visuellement comme du texte mais reste cliquable large.
+.link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: a.$space-3xs;
+    font-weight: a.$font-weight-bold;
+    min-height: 2.6rem;
+}

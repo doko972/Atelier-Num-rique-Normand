@@ -1,0 +1,146 @@
+// =============================================================================
+// Jetons CSS — les variables SASS sont exposées en propriétés personnalisées
+// afin que les préférences d'accessibilité (contraste renforcé, taille du
+// texte, animations) puissent être modifiées à chaud, sans recompilation.
+// =============================================================================
+@use '../abstracts' as a;
+
+:root {
+    // Couleurs
+    --color-primary: #{a.$color-primary};
+    --color-primary-dark: #{a.$color-primary-dark};
+    --color-primary-light: #{a.$color-primary-light};
+    --color-primary-contrast: #{a.$color-primary-contrast};
+
+    --color-secondary: #{a.$color-secondary};
+    --color-secondary-dark: #{a.$color-secondary-dark};
+    --color-secondary-light: #{a.$color-secondary-light};
+    --color-secondary-contrast: #{a.$color-secondary-contrast};
+
+    --color-accent: #{a.$color-accent};
+    --color-accent-strong: #{a.$color-accent-strong};
+    --color-accent-darker: #{a.$color-accent-darker};
+    --color-accent-light: #{a.$color-accent-light};
+    --color-accent-contrast: #{a.$color-accent-contrast};
+
+    --color-surface: #{a.$color-surface};
+    --color-surface-alt: #{a.$color-surface-alt};
+    --color-surface-sunken: #{a.$color-surface-sunken};
+    --color-text: #{a.$color-text};
+    --color-text-muted: #{a.$color-text-muted};
+    --color-border: #{a.$color-border};
+    --color-border-strong: #{a.$color-border-strong};
+
+    --color-success: #{a.$color-success};
+    --color-success-bg: #{a.$color-success-bg};
+    --color-warning: #{a.$color-warning};
+    --color-warning-bg: #{a.$color-warning-bg};
+    --color-danger: #{a.$color-danger};
+    --color-danger-bg: #{a.$color-danger-bg};
+    --color-info: #{a.$color-info};
+    --color-info-bg: #{a.$color-info-bg};
+
+    --color-focus: #{a.$color-focus};
+
+    // Facteur d'échelle du texte piloté par la barre d'accessibilité
+    --text-scale: 1;
+
+    // Épaisseur des bordures (renforcée en mode contraste élevé)
+    --border-width: 1px;
+
+    // Durée des transitions (mise à 0 quand les animations sont réduites)
+    --transition-fast: #{a.$transition-fast};
+    --transition-base: #{a.$transition-base};
+
+    --shadow-sm: #{a.$shadow-sm};
+    --shadow-md: #{a.$shadow-md};
+    --shadow-lg: #{a.$shadow-lg};
+}
+
+// -----------------------------------------------------------------------------
+// Mode contraste renforcé : noir et blanc francs, bordures épaisses.
+// Tous les couples texte/fond dépassent 7:1 (AAA).
+// -----------------------------------------------------------------------------
+:root[data-contrast='high'] {
+    --color-primary: #00325c;
+    --color-primary-dark: #001f39;
+    --color-primary-light: #ffffff;
+    --color-primary-contrast: #ffffff;
+
+    --color-secondary: #14503f;
+    --color-secondary-dark: #0b3529;
+    --color-secondary-light: #ffffff;
+
+    --color-accent: #8a3d00;
+    --color-accent-strong: #8a3d00;
+    --color-accent-darker: #5e2900;
+    --color-accent-light: #ffffff;
+
+    --color-surface: #ffffff;
+    --color-surface-alt: #ffffff;
+    --color-surface-sunken: #ffffff;
+    --color-text: #000000;
+    --color-text-muted: #000000;
+    --color-border: #000000;
+    --color-border-strong: #000000;
+
+    --color-success-bg: #ffffff;
+    --color-warning-bg: #ffffff;
+    --color-danger-bg: #ffffff;
+    --color-info-bg: #ffffff;
+    --color-success: #0f4c2c;
+    --color-warning: #6b4400;
+    --color-danger: #8a0f0c;
+    --color-info: #00325c;
+
+    --color-focus: #8a3d00;
+
+    --border-width: 2px;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+}
+
+// -----------------------------------------------------------------------------
+// Réduction des animations : préférence système ou choix explicite.
+// -----------------------------------------------------------------------------
+:root[data-motion='reduced'] {
+    --transition-fast: 0ms;
+    --transition-base: 0ms;
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root:not([data-motion='full']) {
+        --transition-fast: 0ms;
+        --transition-base: 0ms;
+
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Agrandissement du texte (3 crans). Le zoom navigateur reste possible en plus.
+// -----------------------------------------------------------------------------
+:root[data-text-size='large'] {
+    --text-scale: 1.15;
+}
+
+:root[data-text-size='x-large'] {
+    --text-scale: 1.3;
+}

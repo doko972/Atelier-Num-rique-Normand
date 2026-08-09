@@ -1,0 +1,188 @@
+// =============================================================================
+// Typographie
+// =============================================================================
+@use '../abstracts' as a;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: a.$line-height-heading;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-primary);
+    text-wrap: balance;
+}
+
+h1 {
+    font-size: a.$font-size-3xl;
+
+    @include a.from('md') {
+        font-size: a.$font-size-4xl;
+    }
+}
+
+h2 {
+    font-size: a.$font-size-2xl;
+
+    @include a.from('md') {
+        font-size: a.$font-size-3xl;
+    }
+}
+
+h3 {
+    font-size: a.$font-size-xl;
+
+    @include a.from('md') {
+        font-size: a.$font-size-2xl;
+    }
+}
+
+h4 {
+    font-size: a.$font-size-lg;
+
+    @include a.from('md') {
+        font-size: a.$font-size-xl;
+    }
+}
+
+h5,
+h6 {
+    font-size: a.$font-size-lg;
+}
+
+p {
+    max-width: 68ch;
+    text-wrap: pretty;
+}
+
+// Les liens sont toujours soulignés : la couleur seule ne suffit pas (RGAA).
+a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 0.08em;
+
+    &:hover {
+        color: var(--color-primary-dark);
+        text-decoration-thickness: 0.16em;
+    }
+}
+
+strong,
+b {
+    font-weight: a.$font-weight-bold;
+}
+
+abbr[title] {
+    text-decoration: underline dotted;
+    cursor: help;
+}
+
+blockquote {
+    border-inline-start: 5px solid var(--color-secondary);
+    padding: a.$space-sm a.$space-md;
+    background-color: var(--color-secondary-light);
+    border-radius: 0 a.$radius-md a.$radius-md 0;
+
+    p {
+        margin: 0;
+    }
+}
+
+code,
+kbd,
+samp {
+    font-family: a.$font-family-mono;
+    font-size: 0.92em;
+    background-color: var(--color-surface-sunken);
+    padding: 0.1em 0.35em;
+    border-radius: a.$radius-sm;
+}
+
+hr {
+    border: 0;
+    border-top: var(--border-width) solid var(--color-border);
+    margin-block: a.$space-lg;
+}
+
+// -----------------------------------------------------------------------------
+// Zone de contenu rédactionnel (articles, fiches pratiques, pages légales)
+// -----------------------------------------------------------------------------
+.prose {
+    > * + * {
+        margin-top: a.$space-md;
+    }
+
+    h2 {
+        margin-top: a.$space-xl;
+    }
+
+    h3 {
+        margin-top: a.$space-lg;
+    }
+
+    ul,
+    ol {
+        padding-inline-start: a.$space-lg;
+
+        li + li {
+            margin-top: a.$space-2xs;
+        }
+    }
+
+    ul {
+        list-style: disc;
+    }
+
+    ol {
+        list-style: decimal;
+    }
+
+    img {
+        border-radius: a.$radius-md;
+        border: var(--border-width) solid var(--color-border);
+    }
+
+    figure figcaption {
+        font-size: a.$font-size-sm;
+        color: var(--color-text-muted);
+        margin-top: a.$space-2xs;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        border: var(--border-width) solid var(--color-border);
+
+        th,
+        td {
+            padding: a.$space-2xs a.$space-sm;
+            border: var(--border-width) solid var(--color-border);
+            text-align: start;
+        }
+
+        th {
+            background-color: var(--color-surface-sunken);
+        }
+    }
+}
+
+// Utilitaires typographiques
+.text-muted {
+    color: var(--color-text-muted);
+}
+
+.text-lead {
+    font-size: a.$font-size-lg;
+    color: var(--color-text);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-small {
+    font-size: a.$font-size-sm;
+}

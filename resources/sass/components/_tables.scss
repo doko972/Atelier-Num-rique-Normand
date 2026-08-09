@@ -1,0 +1,160 @@
+// =============================================================================
+// Tableaux (surtout back-office). Aucun débordement horizontal sur mobile :
+// le tableau bascule en liste de fiches sous 48rem.
+// =============================================================================
+@use '../abstracts' as a;
+
+.table-wrap {
+    overflow-x: auto;
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-md;
+    background-color: var(--color-surface);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: a.$font-size-sm;
+
+    caption {
+        text-align: start;
+        padding: a.$space-2xs a.$space-sm;
+        font-weight: a.$font-weight-bold;
+        color: var(--color-text-muted);
+    }
+
+    th,
+    td {
+        padding: a.$space-2xs a.$space-sm;
+        text-align: start;
+        vertical-align: top;
+        border-bottom: var(--border-width) solid var(--color-border);
+    }
+
+    thead th {
+        background-color: var(--color-surface-sunken);
+        color: var(--color-text);
+        font-weight: a.$font-weight-bold;
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+    }
+
+    tbody tr:hover {
+        background-color: var(--color-primary-light);
+    }
+
+    tbody tr:last-child td {
+        border-bottom: 0;
+    }
+}
+
+.table__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-3xs;
+    white-space: nowrap;
+}
+
+// En-tête de colonne triable
+.table__sort {
+    display: inline-flex;
+    align-items: center;
+    gap: a.$space-3xs;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-primary);
+    min-height: 2.2rem;
+}
+
+.table__sort[aria-sort='ascending']::after {
+    content: '▲';
+    font-size: 0.7em;
+}
+
+.table__sort[aria-sort='descending']::after {
+    content: '▼';
+    font-size: 0.7em;
+}
+
+.table__empty {
+    padding: a.$space-xl a.$space-md;
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+// Bascule en fiches sur petit écran.
+@media (max-width: 47.99rem) {
+    .table--stacked {
+        thead {
+            @include a.visually-hidden;
+        }
+
+        tr {
+            display: block;
+            border: var(--border-width) solid var(--color-border);
+            border-radius: a.$radius-md;
+            padding: a.$space-2xs;
+
+            & + tr {
+                margin-top: a.$space-2xs;
+            }
+        }
+
+        td {
+            display: grid;
+            grid-template-columns: 9rem 1fr;
+            gap: a.$space-2xs;
+            border-bottom: 0;
+            padding: a.$space-3xs a.$space-2xs;
+        }
+
+        td::before {
+            content: attr(data-label);
+            font-weight: a.$font-weight-bold;
+            color: var(--color-text-muted);
+        }
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Pagination
+// -----------------------------------------------------------------------------
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-3xs;
+    list-style: none;
+    padding: 0;
+    margin-top: a.$space-md;
+    justify-content: center;
+}
+
+.pagination__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.8rem;
+    min-height: 2.8rem;
+    padding-inline: a.$space-2xs;
+    border: var(--border-width) solid var(--color-border-strong);
+    border-radius: a.$radius-md;
+    background-color: var(--color-surface);
+    text-decoration: none;
+    font-weight: a.$font-weight-bold;
+
+    &:hover {
+        background-color: var(--color-primary-light);
+        text-decoration: none;
+    }
+
+    &[aria-current='page'] {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+        color: var(--color-primary-contrast);
+    }
+
+    &[aria-disabled='true'] {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}

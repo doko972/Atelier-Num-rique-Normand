@@ -1,0 +1,45 @@
+// =============================================================================
+// Fil d'Ariane
+// =============================================================================
+@use '../abstracts' as a;
+
+.breadcrumb {
+    background-color: var(--color-surface);
+    border-bottom: var(--border-width) solid var(--color-border);
+    font-size: a.$font-size-sm;
+}
+
+.breadcrumb__list {
+    @include a.container;
+    list-style: none;
+    margin: 0;
+    padding-block: a.$space-2xs;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: a.$space-3xs;
+}
+
+.breadcrumb__item {
+    display: inline-flex;
+    align-items: center;
+    gap: a.$space-3xs;
+
+    & + &::before {
+        content: '›';
+        color: var(--color-text-muted);
+        font-size: 1.2em;
+        line-height: 1;
+    }
+}
+
+.breadcrumb__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.2rem;
+}
+
+.breadcrumb__current {
+    color: var(--color-text-muted);
+    font-weight: a.$font-weight-bold;
+}

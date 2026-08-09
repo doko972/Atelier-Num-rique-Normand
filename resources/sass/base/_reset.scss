@@ -1,0 +1,114 @@
+// =============================================================================
+// Réinitialisation minimale et raisonnable
+// =============================================================================
+@use '../abstracts' as a;
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
+html {
+    font-size: calc(#{a.$font-size-root-mobile} * var(--text-scale));
+    scroll-behavior: smooth;
+    // Compense la hauteur de l'en-tête collant lors des ancres internes.
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+
+    @include a.from('md') {
+        font-size: calc(#{a.$font-size-root-desktop} * var(--text-scale));
+    }
+}
+
+body {
+    min-height: 100vh;
+    font-family: a.$font-family-base;
+    font-size: a.$font-size-base;
+    line-height: a.$line-height-base;
+    color: var(--color-text);
+    background-color: var(--color-surface-alt);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    display: flex;
+    flex-direction: column;
+
+    // Filet de sécurité : aucune page ne doit défiler horizontalement
+    // (codex §31). `clip` plutôt que `hidden`, qui casserait l'en-tête
+    // collant.
+    overflow-x: clip;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+figcaption {
+    overflow-wrap: break-word;
+    // Évite les mots isolés en fin de paragraphe sans casser la lecture.
+    hyphens: manual;
+}
+
+ul[role='list'],
+ol[role='list'] {
+    list-style: none;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+fieldset {
+    border: 0;
+    padding: 0;
+    min-width: 0;
+}
+
+// Le focus doit toujours être perceptible, y compris au clavier uniquement.
+:focus-visible {
+    @include a.focus-ring;
+}
+
+// Certains navigateurs anciens n'implémentent pas :focus-visible.
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+::selection {
+    background-color: var(--color-primary);
+    color: var(--color-primary-contrast);
+}

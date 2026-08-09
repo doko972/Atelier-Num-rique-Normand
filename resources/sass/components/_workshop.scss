@@ -1,0 +1,359 @@
+// =============================================================================
+// Ateliers, témoignages, partenaires, questions fréquentes, tarifs
+// =============================================================================
+@use '../abstracts' as a;
+
+// -- Carte d'atelier ---------------------------------------------------------
+.workshop-card {
+    position: relative;
+    display: grid;
+    gap: a.$space-sm;
+    padding: a.$space-md;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-inline-start: 6px solid var(--color-secondary);
+    border-radius: a.$radius-lg;
+
+    @include a.from('md') {
+        grid-template-columns: 9rem minmax(0, 1fr) auto;
+        align-items: center;
+    }
+}
+
+.workshop-card--full {
+    border-inline-start-color: var(--color-warning);
+}
+
+.workshop-card--cancelled {
+    border-inline-start-color: var(--color-danger);
+    background-color: var(--color-surface-sunken);
+}
+
+.workshop-card__date {
+    display: flex;
+    align-items: baseline;
+    gap: a.$space-2xs;
+    padding: a.$space-2xs;
+    background-color: var(--color-primary-light);
+    border-radius: a.$radius-md;
+    text-align: center;
+
+    @include a.from('md') {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+}
+
+.workshop-card__day {
+    font-size: a.$font-size-2xl;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-primary);
+    line-height: 1.1;
+}
+
+.workshop-card__month {
+    text-transform: uppercase;
+    font-size: a.$font-size-sm;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-primary);
+    letter-spacing: 0.04em;
+}
+
+.workshop-card__year {
+    font-size: a.$font-size-xs;
+    color: var(--color-text-muted);
+}
+
+.workshop-card__title {
+    font-size: a.$font-size-xl;
+    margin-bottom: a.$space-3xs;
+}
+
+.workshop-card__meta {
+    list-style: none;
+    padding: 0;
+    margin: a.$space-3xs 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-3xs a.$space-sm;
+    font-size: a.$font-size-sm;
+    color: var(--color-text-muted);
+}
+
+.workshop-card__action {
+    display: flex;
+    flex-direction: column;
+    gap: a.$space-3xs;
+    align-items: stretch;
+
+    @include a.from('md') {
+        align-items: flex-end;
+    }
+}
+
+// Places restantes : texte explicite, complété par une jauge décorative.
+.seats {
+    font-weight: a.$font-weight-bold;
+}
+
+.seats--low {
+    color: var(--color-warning);
+}
+
+.seats--none {
+    color: var(--color-danger);
+}
+
+.seats__gauge {
+    display: block;
+    width: 100%;
+    max-width: 10rem;
+    height: 0.6rem;
+    margin-top: a.$space-3xs;
+    background-color: var(--color-surface-sunken);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-pill;
+    overflow: hidden;
+}
+
+.seats__fill {
+    display: block;
+    height: 100%;
+    background-color: var(--color-secondary);
+}
+
+// -- Témoignages -------------------------------------------------------------
+.testimonial {
+    height: 100%;
+    padding: a.$space-md;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-lg;
+    display: flex;
+    flex-direction: column;
+    gap: a.$space-2xs;
+}
+
+.testimonial__quote {
+    font-size: a.$font-size-lg;
+    margin: 0;
+
+    &::before {
+        content: '« ';
+    }
+
+    &::after {
+        content: ' »';
+    }
+}
+
+.testimonial__author {
+    margin-top: auto;
+    font-size: a.$font-size-sm;
+    color: var(--color-text-muted);
+    font-style: normal;
+}
+
+// -- Partenaires -------------------------------------------------------------
+.partner-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-md;
+    align-items: center;
+    justify-content: center;
+}
+
+.partner-list__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: a.$space-2xs;
+    min-height: 5rem;
+    padding: a.$space-2xs a.$space-md;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-md;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-primary);
+}
+
+.partner-list__logo {
+    max-height: 3rem;
+    width: auto;
+}
+
+// -- Questions fréquentes (details/summary natif, accessible sans JS) --------
+.faq {
+    display: grid;
+    gap: a.$space-2xs;
+}
+
+.faq__item {
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-md;
+    overflow: hidden;
+
+    &[open] {
+        border-color: var(--color-primary);
+    }
+}
+
+.faq__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: a.$space-2xs;
+    padding: a.$space-2xs a.$space-md;
+    min-height: a.$touch-target;
+    font-weight: a.$font-weight-bold;
+    font-size: a.$font-size-lg;
+    color: var(--color-primary);
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+        display: none;
+    }
+
+    &::after {
+        content: '+';
+        flex: none;
+        font-size: 1.6em;
+        line-height: 1;
+        color: var(--color-accent-strong);
+    }
+
+    &:hover {
+        background-color: var(--color-primary-light);
+    }
+
+    &:focus-visible {
+        @include a.focus-ring($offset: -3px);
+    }
+}
+
+.faq__item[open] .faq__question::after {
+    content: '−';
+}
+
+.faq__answer {
+    padding: 0 a.$space-md a.$space-md;
+
+    > * + * {
+        margin-top: a.$space-2xs;
+    }
+}
+
+// -- Tarifs ------------------------------------------------------------------
+.price-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: a.$space-md;
+    background-color: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: a.$radius-lg;
+}
+
+.price-card--highlight {
+    border-color: var(--color-secondary);
+    box-shadow: var(--shadow-md);
+}
+
+.price-card__amount {
+    font-size: a.$font-size-3xl;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-primary);
+    line-height: 1.1;
+}
+
+.price-card__unit {
+    font-size: a.$font-size-base;
+    font-weight: a.$font-weight-normal;
+    color: var(--color-text-muted);
+}
+
+.price-card__includes {
+    list-style: none;
+    padding: 0;
+    margin: a.$space-sm 0 0;
+
+    li {
+        display: flex;
+        gap: a.$space-2xs;
+        padding-block: a.$space-3xs;
+    }
+
+    li::before {
+        content: '✓';
+        color: var(--color-success);
+        font-weight: a.$font-weight-bold;
+        flex: none;
+    }
+}
+
+// -- Fiches pratiques : étapes numérotées -----------------------------------
+.guide-steps {
+    counter-reset: guide-step;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: a.$space-md;
+}
+
+.guide-steps__item {
+    counter-increment: guide-step;
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: a.$space-sm;
+    padding: a.$space-md;
+    background-color: var(--color-surface);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: a.$radius-md;
+    break-inside: avoid;
+}
+
+.guide-steps__item::before {
+    content: counter(guide-step);
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: var(--color-secondary);
+    color: var(--color-secondary-contrast);
+    font-weight: a.$font-weight-bold;
+    font-size: a.$font-size-xl;
+}
+
+.guide-steps__title {
+    font-size: a.$font-size-lg;
+    margin-bottom: a.$space-3xs;
+}
+
+.guide-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-2xs a.$space-md;
+    list-style: none;
+    padding: a.$space-2xs a.$space-md;
+    margin: 0;
+    background-color: var(--color-surface-sunken);
+    border-radius: a.$radius-md;
+    font-size: a.$font-size-sm;
+
+    li {
+        display: flex;
+        gap: a.$space-3xs;
+    }
+
+    strong {
+        color: var(--color-text);
+    }
+}
