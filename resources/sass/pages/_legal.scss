@@ -1,0 +1,47 @@
+// =============================================================================
+// Mentions légales
+//
+// L'identité de l'éditeur est une liste de définitions : chaque libellé
+// annonce la donnée qui suit. Cette structure est aussi celle qu'attendent
+// les lecteurs d'écran, et celle qu'un contrôle de conformité vient chercher.
+// =============================================================================
+@use '../abstracts' as a;
+
+.legal-identity {
+    margin-block: a.$space-sm a.$space-lg;
+    display: grid;
+    gap: a.$space-3xs a.$space-md;
+
+    // En dessous de cette largeur, deux colonnes serreraient trop les valeurs
+    // longues — une adresse, un SIRET — et les feraient revenir à la ligne.
+    @include a.from('sm') {
+        grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    }
+
+    dt {
+        color: var(--color-text-muted);
+        font-size: a.$font-size-sm;
+
+        @include a.from('sm') {
+            grid-column: 1;
+        }
+    }
+
+    dd {
+        margin: 0 0 a.$space-2xs;
+        font-weight: a.$font-weight-bold;
+
+        @include a.from('sm') {
+            grid-column: 2;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.legal-host {
+    margin-top: a.$space-2xs;
+    padding: a.$space-2xs a.$space-sm;
+    background-color: var(--color-surface-alt);
+    border-inline-start: 3px solid var(--color-border-strong);
+    border-radius: a.$radius-sm;
+}

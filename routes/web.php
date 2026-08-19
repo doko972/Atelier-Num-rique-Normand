@@ -76,9 +76,9 @@ Route::controller(Site\PageController::class)->group(function (): void {
 
 // Pages légales, identifiées par une clé stable côté base de données : leur
 // titre peut changer sans casser les liens du pied de page.
-Route::get('/mentions-legales', [Site\PageController::class, 'system'])
-    ->defaults('key', Page::KEY_LEGAL)
-    ->name('legal');
+// Les mentions légales ont leur propre méthode : leur contenu obligatoire est
+// construit à partir des paramètres du site, pas d'un texte libre.
+Route::get('/mentions-legales', [Site\PageController::class, 'legal'])->name('legal');
 Route::get('/politique-de-confidentialite', [Site\PageController::class, 'system'])
     ->defaults('key', Page::KEY_PRIVACY)
     ->name('privacy');

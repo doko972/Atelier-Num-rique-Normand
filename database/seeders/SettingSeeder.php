@@ -115,15 +115,15 @@ class SettingSeeder extends Seeder
                 'label' => 'Adresse électronique de contact',
             ],
             [
-                // Laissée vide à dessein : l'activité se fait au domicile des
-                // personnes, il n'y a pas de local à faire venir. Seule la
-                // commune est publiée. La rue reste néanmoins obligatoire dans
-                // les mentions légales d'un entrepreneur individuel.
+                // Exigée par l'article 19 de la LCEN pour un entrepreneur
+                // individuel. L'activité se déroulant au domicile des
+                // personnes, c'est une adresse de rattachement et non un lieu
+                // d'accueil : les pages publiques ne la mettent pas en avant.
                 'key' => 'address',
-                'value' => '',
+                'value' => '3 route de Vassy',
                 'group' => 'contact',
                 'label' => 'Adresse postale',
-                'help' => 'Rue et numéro. Facultatif ici, mais exigé par la loi dans les mentions légales.',
+                'help' => 'Rue et numéro, comme l’exige la loi dans les mentions légales.',
             ],
             [
                 'key' => 'postal_code',
@@ -206,12 +206,16 @@ class SettingSeeder extends Seeder
                 'label' => 'Directeur de la publication',
             ],
             [
+                // L'article 6 de la LCEN impose de nommer l'hébergeur.
+                // Hostinger ne publie pas de numéro de téléphone : le support
+                // se fait par messagerie. L'adresse de son siège et son moyen
+                // de contact suffisent à satisfaire l'obligation.
                 'key' => 'hosting_provider',
-                'value' => '',
+                'value' => "Hostinger International Ltd\n61 Lordou Vironos str., 6023 Larnaca, Chypre\nhttps://www.hostinger.fr — support par messagerie",
                 'type' => 'text',
                 'group' => 'legal',
                 'label' => 'Hébergeur du site',
-                'help' => 'Nom, adresse et téléphone, comme l’exige la loi.',
+                'help' => 'Nom, adresse et moyen de contact, comme l’exige la loi.',
             ],
         ];
     }

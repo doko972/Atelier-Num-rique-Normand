@@ -16,6 +16,11 @@ use Illuminate\Database\Seeder;
  */
 class PageSeeder extends Seeder
 {
+    /**
+     * Marque des trames de travail restées telles quelles.
+     */
+    protected const string PLACEHOLDER_MARKER = 'À compléter depuis les paramètres du site';
+
     public function run(): void
     {
         foreach ($this->pages() as $position => $page) {
@@ -37,11 +42,20 @@ class PageSeeder extends Seeder
             // back-office. Le réécrire à chaque déploiement effacerait ce
             // travail sans prévenir. Seuls les champs structurants — ceux
             // dont dépendent les liens du pied de page — sont réalignés.
-            $existing->update([
+            $attributes = [
                 'is_system' => true,
                 'show_in_footer' => $page['show_in_footer'],
                 'position' => $position,
-            ]);
+            ];
+
+            // Un texte encore marqué « à compléter » n'a jamais été relu :
+            // le remplacer ne détruit aucun travail, alors que le conserver
+            // laisse la mention en ligne telle quelle.
+            if (str_contains((string) $existing->body, self::PLACEHOLDER_MARKER)) {
+                $attributes['body'] = $page['body'];
+            }
+
+            $existing->update($attributes);
         }
     }
 
@@ -201,22 +215,10 @@ class PageSeeder extends Seeder
                 'title' => 'Mentions légales',
                 'summary' => 'Qui édite ce site et qui l’héberge.',
                 'show_in_footer' => true,
+                // L'identité de l'éditeur et celle de l'hébergeur ne figurent
+                // pas ici : la page les lit dans les paramètres du site. Ce
+                // texte ne porte plus que ce qui relève de la rédaction.
                 'body' => <<<'TEXTE'
-                    Éditeur du site
-
-                    Les informations d’identification de l’éditeur (nom, forme juridique, adresse,
-                    numéro SIRET, téléphone, adresse électronique) se renseignent depuis l’espace
-                    d’administration, rubrique « Paramètres du site ».
-
-                    Directeur de la publication
-
-                    À compléter depuis les paramètres du site.
-
-                    Hébergement
-
-                    À compléter depuis les paramètres du site : nom, adresse et téléphone de
-                    l’hébergeur, comme l’exige la loi pour la confiance dans l’économie numérique.
-
                     Propriété intellectuelle
 
                     Les textes, les fiches pratiques et les visuels de ce site sont la propriété de

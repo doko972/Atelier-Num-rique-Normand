@@ -1,7 +1,13 @@
 # Guide de déploiement
 
-Mise en production sur un serveur Debian 12 ou 13, avec Nginx, PHP-FPM et
-MariaDB. Les chemins et noms d'utilisateur sont à adapter.
+Deux hébergements sont décrits :
+
+- les sections **1 à 10** couvrent un serveur dédié ou virtuel (Debian 12 ou
+  13, Nginx, PHP-FPM, MariaDB) ;
+- la section **11** couvre un hébergement mutualisé de type Hostinger, où
+  l'accès est restreint et plusieurs commandes habituelles sont indisponibles.
+
+C'est cette dernière qui correspond à la mise en ligne actuelle.
 
 ---
 
@@ -109,34 +115,34 @@ configuration, les requêtes SQL et des extraits de code.
 
 ```bash
 sudo -u conseiller php artisan migrate --force
-sudo -u conseiller php artisan db:seed --class=RoleSeeder --force
-sudo -u conseiller php artisan db:seed --class=SettingSeeder --force
-sudo -u conseiller php artisan db:seed --class=PageSeeder --force
+sudo -u conseiller php artisan db:seed --force
 ```
 
-N'exécutez **pas** `db:seed` sans classe en production : cela installerait les
-contenus de démonstration. `UserSeeder` refuse d'ailleurs de s'exécuter
-lorsque `APP_ENV=production`.
+`db:seed` sans classe est sûr : `DatabaseSeeder` ne pose que ce qui est vrai —
+rôles, paramètres, pages légales, communes, catalogue de services et
+ressources — et chaque seeder est idempotent.
+
+Les contenus inventés — ateliers d'exemple, comptes de démonstration — vivent
+dans `DemoSeeder`, appelé séparément et qui refuse de s'exécuter lorsque
+`APP_ENV=production`.
 
 ### Premier compte d'administration
 
 ```bash
-sudo -u conseiller php artisan tinker
+sudo -u conseiller php artisan compte:creer \
+    --nom="Prénom Nom" --email="vous@votre-domaine.fr"
 ```
 
-```php
-$role = App\Models\Role::where('slug', 'super_admin')->firstOrFail();
+Le mot de passe est engendré et affiché une seule fois : notez-le avant de
+fermer le terminal. L'option `--mot-de-passe=` permet de l'imposer, au prix
+de le laisser dans l'historique du shell.
 
-$user = App\Models\User::create([
-    'role_id'  => $role->id,
-    'name'     => 'Prénom Nom',
-    'email'    => 'vous@votre-domaine.fr',
-    'password' => Hash::make('un-mot-de-passe-long-et-unique'),
-    'is_active'=> true,
-]);
+`--role=` accepte `super_admin`, `admin`, `adviser`, `editor` ou `viewer`.
+Sans elle, le compte est créé en super administrateur.
 
-$user->markEmailAsVerified();
-```
+La commande est non interactive à dessein : sur un hébergement mutualisé,
+`exec` et `shell_exec` sont désactivés, ce qui rend inutilisables aussi bien
+Tinker que les invites de saisie de Laravel.
 
 ### Optimisations et permissions
 
@@ -349,3 +355,131 @@ signalée dans le `CHANGELOG.md`.
 - [ ] Numéro de téléphone, adresse et mentions légales renseignés dans
       **Paramètres du site**
 - [ ] Une sauvegarde a été prise et **une restauration a été testée**
+
+---
+
+## 11. Variante : hébergement mutualisé (Hostinger)
+
+Un mutualisé n'est pas un petit VPS : c'est un environnement bridé. Ni
+Supervisor, ni Certbot, ni Nginx à configurer — mais aussi pas de Node, et
+plusieurs fonctions PHP désactivées. Les quatre premiers points ci-dessous
+sont ceux qui font perdre du temps ; les autres suivent le déroulé habituel.
+
+### 11.1 La racine du domaine doit pointer sur `public/`
+
+C'est la cause d'une **erreur 403** — et non 404, ce qui égare. Le serveur
+arrive dans un dossier sans `index.php`, et le `Options -Indexes` de
+`public/.htaccess` lui interdit d'en lister le contenu : il refuse l'accès.
+
+Deux dispositions possibles :
+
+- régler le dossier racine du domaine sur `.../public` depuis hPanel ;
+- sinon, placer le projet dans un dossier frère de `public_html` et copier le
+  *contenu* de `public/` dans `public_html`, en corrigeant les chemins de
+  `vendor/autoload.php`, `bootstrap/app.php` et `maintenance.php` dans
+  `index.php`.
+
+La première est préférable : le code reste hors de l'espace web.
+
+### 11.2 Deux versions de PHP coexistent
+
+Le `php` du SSH n'est pas celui qui sert le site. Les deux doivent être en
+**8.3 minimum** (`"php": "^8.3"` dans `composer.json`).
+
+```bash
+php -v                      # souvent une version plus ancienne
+ls -d /opt/alt/php* 2>/dev/null
+echo 'export PATH=/opt/alt/php83/usr/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
+Passer par le `PATH` plutôt que par un alias : Composer est un script lancé
+via `#!/usr/bin/env php`, il suivra le bon binaire. Avec un alias,
+`composer install` continuerait de tourner sur l'ancienne version.
+
+La version PHP **du site** se règle séparément, dans hPanel.
+
+### 11.3 Tinker ne fonctionne pas
+
+Psy Shell repose sur `shell_exec`, désactivé sur ce type d'hébergement :
+
+```
+Error  Call to undefined function shell_exec().
+```
+
+D'où la commande dédiée, non interactive — les invites de saisie de Laravel
+reposent elles aussi sur `exec`, via `stty` :
+
+```bash
+php artisan compte:creer --nom="Prénom Nom" --email="vous@votre-domaine.fr"
+```
+
+Le mot de passe est engendré et affiché une seule fois. L'option
+`--mot-de-passe=` existe, mais laisse le mot de passe dans
+`~/.bash_history` : à réserver aux cas où c'est indispensable.
+
+### 11.4 Les assets doivent être construits ailleurs
+
+`public/build` est ignoré par Git (`.gitignore`) et npm n'est pas disponible.
+Sans ce dossier, le site s'affiche sans aucun style.
+
+```bash
+npm run build          # sur votre machine
+```
+
+puis téléverser `public/build` par FTP ou depuis le gestionnaire de fichiers.
+Il faut le refaire à chaque modification des feuilles de style.
+
+### 11.5 Déroulé complet
+
+```bash
+git clone <url-du-depot> ~/domains/votre-domaine.fr/laravel
+cd ~/domains/votre-domaine.fr/laravel
+
+cp .env.example .env      # puis renseigner les valeurs de production
+composer install --no-dev --optimize-autoloader
+php artisan key:generate
+
+php artisan migrate --force
+php artisan db:seed --force
+
+php artisan storage:link
+php artisan optimize
+
+find . -type d -exec chmod 755 {} \;
+find . -type f -exec chmod 644 {} \;
+chmod -R 775 storage bootstrap/cache
+chmod 600 .env
+```
+
+`db:seed` sans classe est sûr : `DatabaseSeeder` ne pose que du réel. Les
+contenus de démonstration vivent dans `DemoSeeder`, qu'on n'appelle jamais
+ici.
+
+**Jamais de `chmod 777`.** Le serveur tourne en suEXEC et refuse tout dossier
+accessible en écriture au groupe ou à tous : un `777` sur `storage` provoque
+lui aussi une erreur 403.
+
+### 11.6 Réglages `.env` propres au mutualisé
+
+```dotenv
+QUEUE_CONNECTION=sync
+CACHE_STORE=database
+```
+
+`sync` est impératif : sans Supervisor, une file d'attente `database` ne
+serait jamais dépilée et **aucun courriel ne partirait**. Les envois se font
+donc pendant la requête, ce qui allonge un peu la soumission des formulaires.
+
+### 11.7 Tâches planifiées
+
+Le cron se déclare dans hPanel, avec le chemin complet du binaire PHP — un
+cron n'hérite pas du `PATH` du `.bashrc` :
+
+```
+/opt/alt/php83/usr/bin/php ~/domains/votre-domaine.fr/laravel/artisan schedule:run
+```
+
+La plupart des plans mutualisés n'acceptent pas la minute comme fréquence.
+Toutes les cinq minutes convient : les rappels d'ateliers et la purge RGPD
+n'ont pas besoin d'une précision plus fine.

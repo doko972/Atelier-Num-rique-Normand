@@ -11,6 +11,7 @@ use App\Models\OfficialLink;
 use App\Models\Page;
 use App\Models\Pricing;
 use App\Models\Testimonial;
+use App\Services\SettingsService;
 use Illuminate\Contracts\View\View;
 
 /**
@@ -38,6 +39,40 @@ class PageController extends Controller
         abort_if($page === null || ! $page->status->isPublic(), 404);
 
         return view('site.pages.show', ['page' => $page]);
+    }
+
+    /**
+     * Mentions légales.
+     *
+     * Seule page dont le contenu est imposé par la loi : l'identité de
+     * l'éditeur et celle de l'hébergeur sont donc lues dans les paramètres du
+     * site, et non recopiées dans un texte libre qu'il faudrait penser à
+     * corriger en double.
+     */
+    public function legal(SettingsService $settings): View
+    {
+        $page = Page::findByKey(Page::KEY_LEGAL);
+
+        abort_if($page === null || ! $page->status->isPublic(), 404);
+
+        return view('site.pages.legal', [
+            'page' => $page,
+            'settings' => $settings,
+            'address' => $this->formatAddress($settings),
+        ]);
+    }
+
+    /**
+     * Adresse sur une ligne, en ignorant les champs non renseignés.
+     */
+    private function formatAddress(SettingsService $settings): string
+    {
+        $locality = trim($settings->string('postal_code').' '.$settings->string('city'));
+
+        return implode(', ', array_filter([
+            $settings->string('address'),
+            $locality,
+        ]));
     }
 
     public function about(): View
