@@ -307,13 +307,16 @@ class ServiceSeeder extends Seeder
                 'includes' => ['Cinq heures d’accompagnement', 'Un programme adapté à vos besoins', 'Les fiches écrites correspondantes'],
             ],
             [
+                // « la séance » laissait croire à un forfait pour le groupe
+                // entier. L'unité doit lever le doute à elle seule : elle est
+                // lue juste après le montant, souvent sans lire la suite.
                 'label' => 'Atelier collectif',
                 'slug' => 'atelier-collectif',
                 'model' => PricingModel::Workshop,
                 'amount_cents' => 500,
-                'unit' => 'la séance',
+                'unit' => 'par personne et par séance',
                 'duration_minutes' => 120,
-                'description' => 'En petit groupe, sur un thème précis.',
+                'description' => 'En petit groupe, sur un thème précis. Chaque participant règle 5 €, quel que soit le nombre d’inscrits.',
                 'includes' => ['Deux heures en petit groupe', 'Le matériel est fourni', 'Une fiche pratique à emporter'],
             ],
             [
@@ -335,6 +338,18 @@ class ServiceSeeder extends Seeder
         ];
 
         foreach ($pricings as $position => $pricing) {
+            $existing = Pricing::query()->where('slug', $pricing['slug'])->first();
+
+            // Un tarif retouché depuis le back-office porte un auteur de
+            // modification ; le semoir, qui tourne sans utilisateur connecté,
+            // n'en pose jamais. Réécrire une telle ligne à chaque déploiement
+            // ramènerait silencieusement l'ancien prix.
+            if ($existing !== null && $existing->updated_by !== null) {
+                $existing->update(['position' => $position]);
+
+                continue;
+            }
+
             Pricing::updateOrCreate(
                 ['slug' => $pricing['slug']],
                 [
