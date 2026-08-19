@@ -11,23 +11,38 @@ use Illuminate\Database\Seeder;
 /**
  * Paramètres administrables et horaires d'appel.
  *
- * Les valeurs posées ici sont des exemples destinés à la démonstration : elles
- * ne contiennent aucune coordonnée réelle et doivent être remplacées lors de
- * la mise en service.
+ * Les coordonnées posées ici sont les vraies : elles figurent de toute façon
+ * en clair sur le site, que la loi impose de publier. Les versionner rend le
+ * déploiement reproductible, au lieu de dépendre d'une saisie manuelle après
+ * chaque installation.
+ *
+ * Une valeur saisie depuis le back-office n'est jamais écrasée. Seules les
+ * valeurs d'exemple encore en place le sont — sans quoi un site déjà installé
+ * garderait indéfiniment son `0000000000`.
  */
 class SettingSeeder extends Seeder
 {
+    /**
+     * Valeurs de démonstration, remplaçables sans dommage.
+     *
+     * @var array<int, string>
+     */
+    protected const array PLACEHOLDERS = [
+        '0000000000',
+        '00 00 00 00 00',
+        'contact@example.test',
+        'Votre conseiller numérique',
+    ];
+
     public function run(): void
     {
         foreach ($this->definitions() as $position => $setting) {
+            $current = SiteSetting::query()->where('key', $setting['key'])->value('value');
+
             SiteSetting::updateOrCreate(
                 ['key' => $setting['key']],
                 [
-                    // La valeur existante n'est jamais écrasée : relancer le
-                    // seeder après la mise en service ne doit pas effacer les
-                    // vraies coordonnées.
-                    'value' => SiteSetting::query()->where('key', $setting['key'])->value('value')
-                        ?? $setting['value'],
+                    'value' => $this->isEdited($current) ? $current : $setting['value'],
                     'type' => $setting['type'] ?? 'string',
                     'group' => $setting['group'],
                     'label' => $setting['label'],
@@ -38,6 +53,17 @@ class SettingSeeder extends Seeder
         }
 
         $this->seedOpeningHours();
+    }
+
+    /**
+     * La valeur en base a-t-elle été renseignée pour de bon ?
+     *
+     * Une valeur vide n'a jamais été saisie ; une valeur d'exemple l'a été par
+     * ce seeder. Dans les deux cas, il peut la remplacer.
+     */
+    protected function isEdited(?string $current): bool
+    {
+        return filled($current) && ! in_array($current, self::PLACEHOLDERS, true);
     }
 
     /**
@@ -62,7 +88,7 @@ class SettingSeeder extends Seeder
             ],
             [
                 'key' => 'adviser_name',
-                'value' => 'Votre conseiller numérique',
+                'value' => 'David Grougi',
                 'group' => 'general',
                 'label' => 'Nom du conseiller',
             ],
@@ -70,39 +96,46 @@ class SettingSeeder extends Seeder
             // -- Coordonnées ---------------------------------------------
             [
                 'key' => 'phone',
-                'value' => '0000000000',
+                'value' => '0616602898',
                 'group' => 'contact',
                 'label' => 'Numéro de téléphone',
                 'help' => 'Sans espaces. Utilisé pour le lien d’appel direct.',
             ],
             [
                 'key' => 'phone_display',
-                'value' => '00 00 00 00 00',
+                'value' => '06 16 60 28 98',
                 'group' => 'contact',
                 'label' => 'Numéro tel qu’il s’affiche',
                 'help' => 'Avec des espaces, pour être lu et recopié facilement.',
             ],
             [
                 'key' => 'email',
-                'value' => 'contact@example.test',
+                'value' => 'contact@ateliernormandduweb.fr',
                 'group' => 'contact',
                 'label' => 'Adresse électronique de contact',
             ],
             [
+                // Laissée vide à dessein : l'activité se fait au domicile des
+                // personnes, il n'y a pas de local à faire venir. Seule la
+                // commune est publiée. La rue reste néanmoins obligatoire dans
+                // les mentions légales d'un entrepreneur individuel.
                 'key' => 'address',
                 'value' => '',
                 'group' => 'contact',
                 'label' => 'Adresse postale',
+                'help' => 'Rue et numéro. Facultatif ici, mais exigé par la loi dans les mentions légales.',
             ],
             [
                 'key' => 'postal_code',
-                'value' => '',
+                'value' => '14110',
                 'group' => 'contact',
                 'label' => 'Code postal',
             ],
             [
+                // Reprise dans les données structurées lues par les moteurs de
+                // recherche : c'est elle qui rattache le service à sa commune.
                 'key' => 'city',
-                'value' => '',
+                'value' => 'Condé-en-Normandie',
                 'group' => 'contact',
                 'label' => 'Commune',
             ],
@@ -155,20 +188,20 @@ class SettingSeeder extends Seeder
             // -- Mentions légales -----------------------------------------
             [
                 'key' => 'legal_status',
-                'value' => '',
+                'value' => 'Entreprise individuelle — micro-entrepreneur',
                 'group' => 'legal',
                 'label' => 'Forme juridique',
                 'help' => 'Exemple : entreprise individuelle, association loi 1901.',
             ],
             [
                 'key' => 'siret',
-                'value' => '',
+                'value' => '939 474 755 00013',
                 'group' => 'legal',
                 'label' => 'Numéro SIRET',
             ],
             [
                 'key' => 'publication_director',
-                'value' => '',
+                'value' => 'David Grougi',
                 'group' => 'legal',
                 'label' => 'Directeur de la publication',
             ],
