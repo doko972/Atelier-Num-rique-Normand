@@ -67,21 +67,21 @@ class PricingTest extends TestCase
         $atelier = Pricing::query()->where('slug', 'atelier-collectif')->firstOrFail();
         $editor = $this->userWithRole(UserRole::Admin);
 
-        $atelier->forceFill(['amount_cents' => 800, 'updated_by' => $editor->id])->save();
+        $atelier->forceFill(['amount_cents' => 1200, 'updated_by' => $editor->id])->save();
 
         $this->seed(ServiceSeeder::class);
 
-        $this->assertSame(800, Pricing::query()->where('slug', 'atelier-collectif')->value('amount_cents'));
+        $this->assertSame(1200, Pricing::query()->where('slug', 'atelier-collectif')->value('amount_cents'));
     }
 
     #[Test]
     public function un_tarif_jamais_touche_suit_le_catalogue(): void
     {
         $atelier = Pricing::query()->where('slug', 'atelier-collectif')->firstOrFail();
-        $atelier->forceFill(['amount_cents' => 800])->save();
+        $atelier->forceFill(['amount_cents' => 1200])->save();
 
         $this->seed(ServiceSeeder::class);
 
-        $this->assertSame(500, Pricing::query()->where('slug', 'atelier-collectif')->value('amount_cents'));
+        $this->assertSame(1000, Pricing::query()->where('slug', 'atelier-collectif')->value('amount_cents'));
     }
 }
