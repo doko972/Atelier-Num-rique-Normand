@@ -104,9 +104,27 @@ class SettingsService
      */
     public function phoneLink(): string
     {
-        $phone = preg_replace('/[^\d+]/', '', $this->string('phone')) ?? '';
+        return 'tel:'.$this->normalizedPhone();
+    }
 
-        return 'tel:'.$phone;
+    /**
+     * Même numéro, en lien d'envoi de SMS.
+     *
+     * Le SMS n'est pas un canal secondaire par confort : pour une personne
+     * malentendante — la presbyacousie touche une large part des plus de
+     * 65 ans —, c'est le téléphone qui est le canal difficile, pas l'écrit.
+     */
+    public function smsLink(): string
+    {
+        return 'sms:'.$this->normalizedPhone();
+    }
+
+    /**
+     * Numéro réduit aux chiffres, seule forme acceptée par `tel:` et `sms:`.
+     */
+    private function normalizedPhone(): string
+    {
+        return preg_replace('/[^\d+]/', '', $this->string('phone')) ?? '';
     }
 
     /**

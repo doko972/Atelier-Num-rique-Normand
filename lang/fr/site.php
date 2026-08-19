@@ -54,6 +54,12 @@ return [
         'open' => 'Je réponds au téléphone en ce moment.',
         'closed' => 'Le téléphone n’est pas décroché en ce moment.',
         'hours_title' => 'Horaires d’appel',
+        // Le SMS est proposé après l'appel, jamais à sa place : la plupart des
+        // personnes accompagnées trouvent le téléphone plus simple que l'écrit.
+        // Il reste indispensable à celles qui entendent mal.
+        'sms_intro' => 'Vous entendez mal ou vous préférez écrire ?',
+        'sms_action' => 'Envoyez-moi un SMS au',
+        'sms_promise' => 'Je réponds dans la journée.',
     ],
 
     'breadcrumb' => [

@@ -22,6 +22,18 @@
             </a>
         </p>
 
+        {{--
+            Le numéro est répété en toutes lettres, et pas seulement porté par
+            le lien : un lien `sms:` n'ouvre rien sur un ordinateur de bureau.
+            Ainsi la personne peut le recopier sur son téléphone.
+        --}}
+        <p class="phone-cta__sms text-small">
+            {{ __('site.call.sms_intro') }}
+            {{ __('site.call.sms_action') }}
+            <a href="{{ $settings->smsLink() }}">{{ $settings->phoneDisplay() }}</a>.
+            {{ __('site.call.sms_promise') }}
+        </p>
+
         @if ($settings->openingHours()->isNotEmpty())
             <p class="text-small text-muted">
                 @if ($settings->isOpenAt())

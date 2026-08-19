@@ -245,6 +245,18 @@ select.field__control {
     border-radius: 0 a.$radius-md a.$radius-md 0;
 }
 
+// Le SMS vient après l'appel, et se lit comme une note : le téléphone reste
+// le canal proposé en premier, l'écrit est l'alternative de celles et ceux
+// qui entendent mal.
+.phone-cta__sms {
+    margin-top: a.$space-2xs;
+
+    a {
+        font-weight: a.$font-weight-bold;
+        white-space: nowrap;
+    }
+}
+
 .filters {
     display: flex;
     flex-wrap: wrap;
