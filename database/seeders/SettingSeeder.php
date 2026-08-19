@@ -23,15 +23,20 @@ use Illuminate\Database\Seeder;
 class SettingSeeder extends Seeder
 {
     /**
-     * Valeurs de démonstration, remplaçables sans dommage.
+     * Valeurs que le semoir a lui-même posées par le passé.
+     *
+     * Les retrouver en base signifie que personne n'y a touché : les
+     * remplacer ne détruit donc aucun travail. Une valeur retirée d'ici
+     * devient définitivement acquise et ne sera plus jamais réécrite.
      *
      * @var array<int, string>
      */
-    protected const array PLACEHOLDERS = [
+    protected const array REPLACEABLE = [
         '0000000000',
         '00 00 00 00 00',
         'contact@example.test',
         'Votre conseiller numérique',
+        'Vous pouvez laisser un message avec votre nom et votre numéro. Je vous rappellerai dès que possible.',
     ];
 
     public function run(): void
@@ -58,12 +63,13 @@ class SettingSeeder extends Seeder
     /**
      * La valeur en base a-t-elle été renseignée pour de bon ?
      *
-     * Une valeur vide n'a jamais été saisie ; une valeur d'exemple l'a été par
-     * ce seeder. Dans les deux cas, il peut la remplacer.
+     * Une valeur vide n'a jamais été saisie ; une valeur listée dans
+     * {@see self::REPLACEABLE} a été posée par ce seeder. Dans les deux cas,
+     * il peut la remplacer.
      */
     protected function isEdited(?string $current): bool
     {
-        return filled($current) && ! in_array($current, self::PLACEHOLDERS, true);
+        return filled($current) && ! in_array($current, self::REPLACEABLE, true);
     }
 
     /**
@@ -141,7 +147,7 @@ class SettingSeeder extends Seeder
             ],
             [
                 'key' => 'closed_message',
-                'value' => 'Vous pouvez laisser un message avec votre nom et votre numéro. Je vous rappellerai dès que possible.',
+                'value' => 'Vous pouvez laisser un message avec votre nom et votre numéro, ou m’envoyer un SMS. Je vous rappelle dans la journée.',
                 'type' => 'text',
                 'group' => 'contact',
                 'label' => 'Message affiché hors des horaires d’appel',

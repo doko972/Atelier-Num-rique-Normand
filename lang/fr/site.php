@@ -188,7 +188,10 @@ return [
         'intro' => 'Le plus simple reste le téléphone. Mais vous pouvez aussi m’écrire avec ce formulaire.',
         'form_title' => 'M’écrire',
         'submit' => 'Envoyer mon message',
-        'sent' => 'Merci, votre message est bien arrivé. Votre référence est :reference.',
+        // Le même engagement que celui affiché à côté du numéro pour le SMS :
+        // sans lui, le formulaire passerait pour le canal lent alors que les
+        // deux arrivent au même endroit.
+        'sent' => 'Merci, votre message est bien arrivé. Votre référence est :reference. Je vous réponds dans la journée.',
         'closed' => 'Fermé',
         'hours_range' => 'de :start à :end',
         'locations_title' => 'Où me rencontrer',

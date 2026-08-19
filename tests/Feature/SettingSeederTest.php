@@ -86,6 +86,37 @@ class SettingSeederTest extends TestCase
     }
 
     #[Test]
+    public function il_met_a_jour_un_texte_qu_il_avait_lui_meme_pose(): void
+    {
+        // Le message hors horaires promettait un rappel « dès que possible »,
+        // alors que l'engagement affiché ailleurs est la journée. Un site
+        // déjà installé doit recevoir la correction.
+        SiteSetting::create([
+            'key' => 'closed_message',
+            'value' => 'Vous pouvez laisser un message avec votre nom et votre numéro. Je vous rappellerai dès que possible.',
+            'type' => 'text',
+            'group' => 'contact',
+            'label' => 'Message affiché hors des horaires d’appel',
+        ]);
+
+        $this->seed(SettingSeeder::class);
+
+        $this->assertStringContainsString('dans la journée', (string) $this->value('closed_message'));
+    }
+
+    #[Test]
+    public function le_delai_de_reponse_est_le_meme_partout(): void
+    {
+        // Un délai annoncé ici et tu là pousserait vers le canal qui promet,
+        // alors que les deux arrivent au même endroit.
+        $this->seed(SettingSeeder::class);
+
+        $this->assertStringContainsString('dans la journée', (string) $this->value('closed_message'));
+        $this->assertStringContainsString('dans la journée', __('site.contact.sent'));
+        $this->assertStringContainsString('dans la journée', __('site.call.sms_promise'));
+    }
+
+    #[Test]
     public function le_numero_affiche_correspond_au_numero_appele(): void
     {
         // Un écart entre les deux enverrait l'appel vers un autre numéro que
