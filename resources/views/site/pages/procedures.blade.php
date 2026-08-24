@@ -20,7 +20,7 @@
 
     <section class="section">
         <div class="container container--narrow">
-            <div class="prose">{!! nl2br(e($page->body)) !!}</div>
+            <div class="prose">{!! \App\Support\RichText::render($page->body) !!}</div>
         </div>
     </section>
 

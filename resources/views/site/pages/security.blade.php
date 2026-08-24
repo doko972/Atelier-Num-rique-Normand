@@ -33,7 +33,7 @@
                 <p style="font-size: 1.125rem"><strong>{{ __('site.security.warning') }}</strong></p>
             </div>
 
-            <div class="prose" style="margin-top: 2rem">{!! nl2br(e($page->body)) !!}</div>
+            <div class="prose" style="margin-top: 2rem">{!! \App\Support\RichText::render($page->body) !!}</div>
         </div>
     </section>
 

@@ -17,9 +17,18 @@ use Illuminate\Database\Seeder;
 class PageSeeder extends Seeder
 {
     /**
-     * Marque des trames de travail restées telles quelles.
+     * Extraits reconnaissables des trames que ce semoir a lui-même posées.
+     *
+     * Les retrouver dans un texte signifie que personne ne l'a réécrit : le
+     * remplacer ne détruit donc aucun travail. Un texte relu, lui, reste
+     * intouché — c'est la règle générale.
+     *
+     * @var array<int, string>
      */
-    protected const string PLACEHOLDER_MARKER = 'À compléter depuis les paramètres du site';
+    protected const array SEEDED_MARKERS = [
+        'À compléter depuis les paramètres du site',
+        'J’ai travaillé plusieurs années dans l’informatique avant de me consacrer',
+    ];
 
     public function run(): void
     {
@@ -48,15 +57,29 @@ class PageSeeder extends Seeder
                 'position' => $position,
             ];
 
-            // Un texte encore marqué « à compléter » n'a jamais été relu :
+            // Un texte encore reconnaissable comme trame n'a jamais été relu :
             // le remplacer ne détruit aucun travail, alors que le conserver
-            // laisse la mention en ligne telle quelle.
-            if (str_contains((string) $existing->body, self::PLACEHOLDER_MARKER)) {
+            // laisserait une page générique en ligne.
+            if ($this->isStillSeeded((string) $existing->body)) {
                 $attributes['body'] = $page['body'];
             }
 
             $existing->update($attributes);
         }
+    }
+
+    /**
+     * Le texte en base provient-il encore de ce semoir ?
+     */
+    protected function isStillSeeded(string $body): bool
+    {
+        foreach (self::SEEDED_MARKERS as $marker) {
+            if (str_contains($body, $marker)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -72,34 +95,53 @@ class PageSeeder extends Seeder
                 'summary' => 'Qui je suis, comment je travaille, et ce que je m’engage à faire.',
                 'show_in_footer' => false,
                 'body' => <<<'TEXTE'
-                    Je suis conseiller numérique. Mon métier consiste à accompagner les habitants
-                    dans l’usage de l’informatique, d’Internet, du téléphone et des démarches en ligne.
+                    Je suis conseiller numérique et technicien informatique. J’accompagne les
+                    particuliers dans l’usage de l’informatique, d’Internet, du téléphone et des
+                    démarches en ligne. J’interviens également auprès des professionnels, associations
+                    et collectivités pour leurs besoins numériques et informatiques.
 
-                    Mon parcours
+                    ## Mon parcours
 
-                    J’ai travaillé plusieurs années dans l’informatique avant de me consacrer à
-                    l’accompagnement des personnes. Ce sont deux métiers très différents : le premier
-                    demande de comprendre les machines, le second de comprendre les gens.
+                    Mon parcours professionnel a commencé au sein de l’Armée de Terre, où j’ai exercé
+                    pendant plus de vingt ans, notamment dans des fonctions liées à l’informatique,
+                    aux systèmes et réseaux et à l’encadrement.
 
-                    Ma méthode
+                    J’ai ensuite poursuivi mon parcours dans le secteur privé comme technicien
+                    informatique, avant de compléter cette expérience technique par une formation
+                    professionnelle en développement web.
+
+                    Aujourd’hui, avec **L’Atelier Numérique Normand**, je mets ces compétences au
+                    service des habitants, des professionnels et des collectivités de proximité.
+
+                    Au fil de mon parcours, j’ai appris deux choses complémentaires : comprendre les
+                    machines et comprendre les gens.
+
+                    ## Ma méthode
 
                     Je ne fais pas à votre place. Vous tenez la souris, vous tapez sur le clavier, et
-                    je vous guide. C’est plus lent au début, mais c’est la seule façon de repartir en
+                    je vous guide.
+
+                    C’est parfois plus lent au début, mais c’est la meilleure façon de repartir en
                     sachant refaire seul.
 
                     Nous avançons une étape à la fois. Vous pouvez me faire répéter autant de fois que
                     nécessaire : c’est normal, et c’est même souhaitable.
 
-                    À la fin de chaque séance, je vous remets une fiche écrite reprenant ce que nous
-                    avons vu, pour que vous puissiez la reprendre tranquillement chez vous.
+                    À la fin de chaque séance d’accompagnement, je vous remets une fiche écrite
+                    reprenant ce que nous avons vu, pour que vous puissiez la reprendre tranquillement
+                    chez vous.
 
-                    Mes engagements
+                    ## Mes engagements
 
                     Je ne conserve jamais vos mots de passe. Je ne vous demande jamais votre code
-                    bancaire. Ce que vous me confiez reste entre nous.
+                    bancaire. Ce que vous me confiez reste confidentiel.
 
-                    Si votre demande dépasse mon domaine — un conseil juridique, fiscal, médical ou
-                    financier — je vous le dis franchement et je vous oriente vers la bonne personne.
+                    Je vous explique ce que je fais et pourquoi je le fais. Aucune intervention
+                    supplémentaire n’est réalisée sans votre accord.
+
+                    Si votre demande dépasse mon domaine — conseil juridique, fiscal, médical ou
+                    financier — je vous le dis clairement et vous oriente vers l’interlocuteur
+                    compétent.
                     TEXTE,
             ],
 

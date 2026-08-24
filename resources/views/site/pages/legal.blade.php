@@ -82,7 +82,7 @@
                 @endif
             @endif
 
-            <div class="prose" style="margin-top: 2rem">{!! nl2br(e($page->body)) !!}</div>
+            <div class="prose" style="margin-top: 2rem">{!! \App\Support\RichText::render($page->body) !!}</div>
 
             <p class="text-small text-muted" style="margin-top: 2rem">
                 Dernière mise à jour :

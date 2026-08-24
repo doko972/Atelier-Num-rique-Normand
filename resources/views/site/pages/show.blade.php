@@ -24,7 +24,7 @@
 
     <section class="section">
         <div class="container container--narrow">
-            <div class="prose">{!! nl2br(e($page->body)) !!}</div>
+            <div class="prose">{!! \App\Support\RichText::render($page->body) !!}</div>
 
             @if ($page->files->isNotEmpty())
                 <section aria-labelledby="documents-page" style="margin-top: 2rem">
