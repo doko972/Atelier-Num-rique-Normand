@@ -59,6 +59,12 @@
                 <li><a href="{{ route('cookies') }}">Gestion des cookies</a></li>
                 <li><a href="{{ route('accessibility') }}">Déclaration d’accessibilité</a></li>
 
+                {{--
+                    Les quatre pages ci-dessus sont écrites en dur : elles ont
+                    chacune leur route, dont l'adresse ne bouge pas si leur
+                    titre change. `inFooter()` les écarte donc de la liste
+                    dynamique, qui n'apporte que les pages ajoutées ensuite.
+                --}}
                 @foreach ($footerPages as $page)
                     <li><a href="{{ route('pages.show', $page) }}">{{ $page->title }}</a></li>
                 @endforeach

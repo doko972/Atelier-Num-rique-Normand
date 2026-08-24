@@ -41,6 +41,22 @@ class Page extends Model
 
     public const string KEY_SECURITY = 'securite-et-arnaques';
 
+    /**
+     * Pages déjà citées nommément dans le pied de page.
+     *
+     * Le gabarit les écrit en dur, car elles ont chacune leur propre route :
+     * leur adresse reste stable même si leur titre change. Les reprendre dans
+     * la liste dynamique les afficherait deux fois.
+     *
+     * @var array<int, string>
+     */
+    public const array FOOTER_DEDICATED_KEYS = [
+        self::KEY_LEGAL,
+        self::KEY_PRIVACY,
+        self::KEY_COOKIES,
+        self::KEY_ACCESSIBILITY,
+    ];
+
     protected $fillable = [
         'title',
         'slug',
@@ -87,10 +103,20 @@ class Page extends Model
      * @param  Builder<static>  $query
      * @return Builder<static>
      */
+    /**
+     * Pages à ajouter au pied de page, en plus des liens déjà écrits en dur.
+     */
     public function scopeInFooter(Builder $query): Builder
     {
         return $query->published()
             ->where('show_in_footer', true)
+            // `NOT IN` seul écarterait aussi les lignes sans clé — en SQL,
+            // `NULL NOT IN (…)` ne vaut pas vrai. Or ce sont précisément les
+            // pages créées depuis le back-office, les seules que cette liste
+            // ait à afficher.
+            ->where(fn (Builder $page) => $page
+                ->whereNull('key')
+                ->orWhereNotIn('key', self::FOOTER_DEDICATED_KEYS))
             ->orderBy('position')
             ->orderBy('title');
     }
