@@ -12,10 +12,10 @@ use App\Notifications\ContactReceivedNotification;
 use App\Notifications\NewContactForAdminNotification;
 use App\Notifications\NewPartnershipForAdminNotification;
 use App\Notifications\PartnershipReceivedNotification;
+use App\Support\Notifier;
 use App\Support\Privacy;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 
 /**
  * Traitement des messages reçus et des demandes de partenariat.
@@ -52,12 +52,13 @@ class ContactRequestService
 
         Log::channel('admin')->info('Nouveau message reçu.', ['reference' => $contact->reference]);
 
+        $context = ['reference' => $contact->reference];
+
         if ($contact->canReceiveEmail()) {
-            Notification::route('mail', $contact->email)
-                ->notify(new ContactReceivedNotification($contact));
+            Notifier::mail($contact->email, new ContactReceivedNotification($contact), $context);
         }
 
-        $this->notifyAdmin(new NewContactForAdminNotification($contact));
+        $this->notifyAdmin(new NewContactForAdminNotification($contact), $context);
 
         return $contact;
     }
@@ -87,12 +88,13 @@ class ContactRequestService
             'organisation' => $partnership->organisation_name,
         ]);
 
+        $context = ['reference' => $partnership->reference];
+
         if ($partnership->canReceiveEmail()) {
-            Notification::route('mail', $partnership->email)
-                ->notify(new PartnershipReceivedNotification($partnership));
+            Notifier::mail($partnership->email, new PartnershipReceivedNotification($partnership), $context);
         }
 
-        $this->notifyAdmin(new NewPartnershipForAdminNotification($partnership));
+        $this->notifyAdmin(new NewPartnershipForAdminNotification($partnership), $context);
 
         return $partnership;
     }
@@ -107,12 +109,11 @@ class ContactRequestService
         $request->save();
     }
 
-    protected function notifyAdmin(mixed $notification): void
+    /**
+     * @param  array<string, mixed>  $context
+     */
+    protected function notifyAdmin(mixed $notification, array $context = []): void
     {
-        $adminEmail = config('site.contact.admin_email');
-
-        if (filled($adminEmail)) {
-            Notification::route('mail', $adminEmail)->notify($notification);
-        }
+        Notifier::mail(config('site.contact.admin_email'), $notification, $context);
     }
 }

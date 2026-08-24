@@ -13,11 +13,11 @@ use App\Models\WorkshopRegistration;
 use App\Notifications\RegistrationConfirmedNotification;
 use App\Notifications\SeatAvailableNotification;
 use App\Notifications\WaitingListNotification;
+use App\Support\Notifier;
 use App\Support\Privacy;
 use App\Support\RegistrationOutcome;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 
 /**
  * Inscriptions aux ateliers : places, liste d'attente, annulations.
@@ -171,8 +171,11 @@ class WorkshopRegistrationService
         ]);
 
         if ($promoted->canReceiveEmail()) {
-            Notification::route('mail', $promoted->email)
-                ->notify(new SeatAvailableNotification($promoted));
+            Notifier::mail(
+                $promoted->email,
+                new SeatAvailableNotification($promoted),
+                ['reference' => $promoted->reference],
+            );
         }
 
         return $promoted;
@@ -228,6 +231,6 @@ class WorkshopRegistrationService
             ? new WaitingListNotification($registration)
             : new RegistrationConfirmedNotification($registration);
 
-        Notification::route('mail', $registration->email)->notify($notification);
+        Notifier::mail($registration->email, $notification, ['reference' => $registration->reference]);
     }
 }

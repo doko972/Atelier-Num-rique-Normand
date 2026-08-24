@@ -37,10 +37,11 @@ class TestMailDeliveryCommandTest extends TestCase
     }
 
     #[Test]
-    public function elle_alerte_quand_le_port_465_n_a_pas_de_chiffrement(): void
+    public function elle_n_alerte_pas_sur_un_port_465_qui_fonctionne(): void
     {
-        // Sans MAIL_SCHEME=smtps, le port 465 échoue sans message clair :
-        // c'est la panne SMTP la plus fréquente sur ce type d'hébergement.
+        // Symfony déduit le chiffrement implicite du port 465 quand
+        // MAIL_SCHEME n'est pas défini. Alerter sur la seule lecture de la
+        // configuration accuserait une installation qui marche.
         config([
             'mail.default' => 'smtp',
             'mail.mailers.smtp.port' => 465,
@@ -50,7 +51,8 @@ class TestMailDeliveryCommandTest extends TestCase
         Mail::fake();
 
         $this->artisan('courriel:tester', ['destinataire' => 'essai@exemple.test'])
-            ->expectsOutputToContain('MAIL_SCHEME=smtps');
+            ->doesntExpectOutputToContain('MAIL_SCHEME=smtps')
+            ->assertSuccessful();
     }
 
     #[Test]

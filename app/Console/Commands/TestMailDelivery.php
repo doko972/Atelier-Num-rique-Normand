@@ -92,20 +92,11 @@ class TestMailDelivery extends Command
             );
             $this->components->twoColumnDetail('Identifiant', (string) config('mail.mailers.smtp.username'));
 
-            // Le port 465 attend un chiffrement dès la connexion ; le 587
-            // l'ouvre après coup. Se tromper de couple fait échouer la
-            // connexion sans message clair.
-            if ($port === 465 && $scheme !== 'smtps') {
-                $this->components->warn(
-                    'Le port 465 exige MAIL_SCHEME=smtps. Sans lui, la connexion échoue.',
-                );
-            }
-
-            if ($port === 587 && $scheme === 'smtps') {
-                $this->components->warn(
-                    'Le port 587 n’utilise pas smtps : retirez MAIL_SCHEME ou passez au port 465.',
-                );
-            }
+            // Aucune alerte ici : Symfony déduit le chiffrement implicite du
+            // port 465 lorsque MAIL_SCHEME n'est pas défini. Avertir sur la
+            // seule lecture de la configuration produirait un faux positif
+            // sur une installation qui fonctionne. Le conseil n'est donné
+            // qu'en cas d'échec réel, dans hint().
         }
 
         $this->components->twoColumnDetail('Expéditeur', (string) config('mail.from.address'));

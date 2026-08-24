@@ -12,10 +12,10 @@ use App\Models\User;
 use App\Notifications\AppointmentReceivedNotification;
 use App\Notifications\AppointmentStatusChangedNotification;
 use App\Notifications\NewAppointmentForAdminNotification;
+use App\Support\Notifier;
 use App\Support\Privacy;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 
 /**
  * Logique métier des demandes de rendez-vous.
@@ -116,8 +116,11 @@ class AppointmentService
         ]);
 
         if ($notifyRequester && $appointment->canReceiveEmail()) {
-            Notification::route('mail', $appointment->email)
-                ->notify(new AppointmentStatusChangedNotification($appointment));
+            Notifier::mail(
+                $appointment->email,
+                new AppointmentStatusChangedNotification($appointment),
+                ['reference' => $appointment->reference],
+            );
         }
 
         return $appointment->refresh();
@@ -161,16 +164,16 @@ class AppointmentService
      */
     protected function notifyCreation(Appointment $appointment): void
     {
+        $context = ['reference' => $appointment->reference];
+
         if ($appointment->canReceiveEmail()) {
-            Notification::route('mail', $appointment->email)
-                ->notify(new AppointmentReceivedNotification($appointment));
+            Notifier::mail($appointment->email, new AppointmentReceivedNotification($appointment), $context);
         }
 
-        $adminEmail = config('site.contact.admin_email');
-
-        if (filled($adminEmail)) {
-            Notification::route('mail', $adminEmail)
-                ->notify(new NewAppointmentForAdminNotification($appointment));
-        }
+        Notifier::mail(
+            config('site.contact.admin_email'),
+            new NewAppointmentForAdminNotification($appointment),
+            $context,
+        );
     }
 }

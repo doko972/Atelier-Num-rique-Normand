@@ -8,9 +8,9 @@ use App\Enums\RegistrationStatus;
 use App\Enums\WorkshopStatus;
 use App\Models\Workshop;
 use App\Notifications\WorkshopReminderNotification;
+use App\Support\Notifier;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 
 /**
  * Rappel envoyé quelques jours avant chaque atelier (codex §10).
@@ -72,8 +72,16 @@ class SendWorkshopReminders extends Command
                     continue;
                 }
 
-                Notification::route('mail', $registration->email)
-                    ->notify(new WorkshopReminderNotification($registration));
+                // Le rappel n'est marqué comme envoyé que s'il est parti :
+                // sinon la personne ne serait jamais prévenue, et la
+                // prochaine exécution la sauterait en croyant l'avoir fait.
+                if (! Notifier::mail(
+                    $registration->email,
+                    new WorkshopReminderNotification($registration),
+                    ['reference' => $registration->reference],
+                )) {
+                    continue;
+                }
 
                 $registration->forceFill(['reminder_sent_at' => now()])->save();
                 $sent++;

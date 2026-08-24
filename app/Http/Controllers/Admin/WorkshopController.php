@@ -16,11 +16,11 @@ use App\Models\WorkshopCategory;
 use App\Models\WorkshopRegistration;
 use App\Notifications\WorkshopCancelledNotification;
 use App\Support\CsvExporter;
+use App\Support\Notifier;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -143,9 +143,15 @@ class WorkshopController extends Controller
         $notified = 0;
 
         foreach ($workshop->registrations()->get() as $registration) {
-            if ($registration->canReceiveEmail()) {
-                Notification::route('mail', $registration->email)
-                    ->notify(new WorkshopCancelledNotification($registration));
+            // Un envoi qui échoue ne doit pas interrompre la boucle : les
+            // autres inscrits doivent être prévenus de l'annulation.
+            if ($registration->canReceiveEmail()
+                && Notifier::mail(
+                    $registration->email,
+                    new WorkshopCancelledNotification($registration),
+                    ['reference' => $registration->reference],
+                )
+            ) {
                 $notified++;
             }
         }
