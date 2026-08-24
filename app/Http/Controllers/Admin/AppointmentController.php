@@ -12,6 +12,7 @@ use App\Models\Location;
 use App\Models\User;
 use App\Services\AppointmentService;
 use App\Support\CsvExporter;
+use App\Support\RequestEraser;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -155,6 +156,24 @@ class AppointmentController extends Controller
 
         return back()
             ->with('status', __('admin.appointments.anonymised'))
+            ->with('status_variant', 'success');
+    }
+
+    /**
+     * Suppression définitive.
+     *
+     * Réservée aux essais de mise en service et aux doublons évidents. Pour
+     * une demande réelle, l'anonymisation est la bonne réponse.
+     */
+    public function destroy(Appointment $appointment): RedirectResponse
+    {
+        $this->authorize('delete', $appointment);
+
+        RequestEraser::erase($appointment);
+
+        return redirect()
+            ->route('admin.appointments.index')
+            ->with('status', __('admin.requests.deleted'))
             ->with('status_variant', 'success');
     }
 

@@ -130,6 +130,25 @@
                     </form>
                 </section>
             @endcan
+
+            @can('delete', $contactRequest)
+                <section class="admin-panel" aria-labelledby="suppression">
+                    <h2 class="admin-panel__title" id="suppression">{{ __('admin.requests.delete_title') }}</h2>
+                    <p class="text-small text-muted">{{ __('admin.requests.delete_notice') }}</p>
+
+                    <form
+                        method="POST"
+                        action="{{ route('admin.contact-requests.destroy', $contactRequest) }}"
+                        data-confirm="{{ __('admin.requests.delete_confirm') }}"
+                    >
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn--danger btn--block">
+                            {{ __('admin.requests.delete') }}
+                        </button>
+                    </form>
+                </section>
+            @endcan
         </aside>
     </div>
 @endsection

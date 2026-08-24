@@ -172,6 +172,7 @@ Route::prefix('administration')
                 Route::put('/{appointment}/affectation', 'assign')->name('assign');
                 Route::post('/{appointment}/note', 'addNote')->name('note');
                 Route::post('/{appointment}/anonymiser', 'anonymise')->name('anonymise');
+                Route::delete('/{appointment}', 'destroy')->name('destroy');
             });
 
         // -- Ateliers -------------------------------------------------------
@@ -216,6 +217,7 @@ Route::prefix('administration')
                 Route::get('/{contactRequest}', 'show')->name('show');
                 Route::put('/{contactRequest}', 'update')->name('update');
                 Route::post('/{contactRequest}/anonymiser', 'anonymise')->name('anonymise');
+                Route::delete('/{contactRequest}', 'destroy')->name('destroy');
             });
 
         // -- Demandes de partenariat ------------------------------------------
@@ -229,6 +231,7 @@ Route::prefix('administration')
                 Route::get('/{partnershipRequest}', 'show')->name('show');
                 Route::put('/{partnershipRequest}', 'update')->name('update');
                 Route::post('/{partnershipRequest}/anonymiser', 'anonymise')->name('anonymise');
+                Route::delete('/{partnershipRequest}', 'destroy')->name('destroy');
             });
 
         // -- Contenus éditoriaux -----------------------------------------------

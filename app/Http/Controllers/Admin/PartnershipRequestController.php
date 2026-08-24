@@ -10,6 +10,7 @@ use App\Http\Requests\Site\StorePartnershipRequest as PartnershipForm;
 use App\Models\PartnershipRequest;
 use App\Models\User;
 use App\Support\CsvExporter;
+use App\Support\RequestEraser;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -95,6 +96,24 @@ class PartnershipRequestController extends Controller
 
         return back()
             ->with('status', __('admin.requests.anonymised'))
+            ->with('status_variant', 'success');
+    }
+
+    /**
+     * Suppression définitive.
+     *
+     * Réservée aux essais de mise en service et aux doublons évidents. Pour
+     * une demande réelle, l'anonymisation est la bonne réponse.
+     */
+    public function destroy(PartnershipRequest $partnershipRequest): RedirectResponse
+    {
+        $this->authorize('delete', $partnershipRequest);
+
+        RequestEraser::erase($partnershipRequest);
+
+        return redirect()
+            ->route('admin.partnership-requests.index')
+            ->with('status', __('admin.requests.deleted'))
             ->with('status_variant', 'success');
     }
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ContactRequest;
 use App\Models\User;
 use App\Support\CsvExporter;
+use App\Support\RequestEraser;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -97,6 +98,24 @@ class ContactRequestController extends Controller
 
         return back()
             ->with('status', __('admin.requests.anonymised'))
+            ->with('status_variant', 'success');
+    }
+
+    /**
+     * Suppression définitive.
+     *
+     * Réservée aux essais de mise en service et aux doublons évidents. Pour
+     * une demande réelle, l'anonymisation est la bonne réponse.
+     */
+    public function destroy(ContactRequest $contactRequest): RedirectResponse
+    {
+        $this->authorize('delete', $contactRequest);
+
+        RequestEraser::erase($contactRequest);
+
+        return redirect()
+            ->route('admin.contact-requests.index')
+            ->with('status', __('admin.requests.deleted'))
             ->with('status_variant', 'success');
     }
 

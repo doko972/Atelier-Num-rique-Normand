@@ -223,6 +223,14 @@ return [
         'needs_title' => 'Besoins exprimés',
         'follow_up' => 'Suivi',
         'empty' => 'Aucune demande ne correspond à votre recherche.',
+
+        // La suppression définitive n'est pas la voie normale : le libellé
+        // dit ce à quoi elle sert, pour qu'on ne l'emploie pas par défaut.
+        'delete_title' => 'Supprimer définitivement',
+        'delete_notice' => 'À réserver à vos propres essais et aux doublons évidents. Pour une demande réelle, préférez « Rendre anonyme » : les données personnelles disparaissent, la trace de la demande reste.',
+        'delete' => 'Supprimer définitivement',
+        'delete_confirm' => 'Cette demande sera supprimée définitivement, avec ses notes et son consentement. Cette action est irréversible. Confirmer ?',
+        'deleted' => 'La demande a été supprimée définitivement.',
     ],
 
     'guides' => [
