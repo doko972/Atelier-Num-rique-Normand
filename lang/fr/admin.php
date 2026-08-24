@@ -75,6 +75,9 @@ return [
         'no' => 'Non',
         'none' => 'Aucun',
         'all' => 'Tous',
+        // Le filtre de statut des demandes écarte les archivées par défaut :
+        // son libellé doit l'annoncer, sans quoi la liste paraît incomplète.
+        'except_archived' => 'Tous, sauf les archivés',
         'optional' => 'facultatif',
         'required_fields' => 'Les champs suivis d’une étoile sont obligatoires.',
         'sort_by' => 'Trier par :column',

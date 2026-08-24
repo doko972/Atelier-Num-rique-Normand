@@ -28,7 +28,7 @@
                 label="Statut"
                 :options="collect($statuses)->mapWithKeys(fn ($status) => [$status->value => $status->label()])->all()"
                 :value="$filters['statut'] ?? null"
-                :empty-option="__('admin.common.all')"
+                :empty-option="__('admin.common.except_archived')"
             />
 
             <div class="field">

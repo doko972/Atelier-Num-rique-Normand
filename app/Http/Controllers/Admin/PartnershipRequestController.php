@@ -146,6 +146,12 @@ class PartnershipRequestController extends Controller
     {
         return PartnershipRequest::query()
             ->when($filters['statut'] ?? null, fn ($query, string $status) => $query->where('status', $status))
+            // Voir ContactRequestController : les archivées sortent de la
+            // liste de travail sans quitter la base.
+            ->when(
+                blank($filters['statut'] ?? null),
+                fn ($query) => $query->where('status', '!=', RequestStatus::Archived),
+            )
             ->when($filters['recherche'] ?? null, function ($query, string $terms): void {
                 $query->where(function ($query) use ($terms): void {
                     $query->where('reference', 'like', "%{$terms}%")

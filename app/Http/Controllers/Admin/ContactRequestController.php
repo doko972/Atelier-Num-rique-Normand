@@ -136,6 +136,13 @@ class ContactRequestController extends Controller
     {
         return ContactRequest::query()
             ->when($filters['statut'] ?? null, fn ($query, string $status) => $query->where('status', $status))
+            // Sans filtre explicite, les demandes archivées sont écartées :
+            // une liste qui ne se vide jamais cesse d'être une liste de
+            // travail. Elles restent consultables en choisissant leur statut.
+            ->when(
+                blank($filters['statut'] ?? null),
+                fn ($query) => $query->where('status', '!=', RequestStatus::Archived),
+            )
             ->when($filters['recherche'] ?? null, function ($query, string $terms): void {
                 $query->where(function ($query) use ($terms): void {
                     $query->where('reference', 'like', "%{$terms}%")

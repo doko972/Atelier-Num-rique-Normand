@@ -205,6 +205,12 @@ class AppointmentController extends Controller
     {
         return Appointment::query()
             ->when($filters['statut'] ?? null, fn ($query, string $status) => $query->where('status', $status))
+            // Voir ContactRequestController : les archivées sortent de la
+            // liste de travail sans quitter la base.
+            ->when(
+                blank($filters['statut'] ?? null),
+                fn ($query) => $query->where('status', '!=', AppointmentStatus::Archived),
+            )
             ->when($filters['type'] ?? null, fn ($query, string $type) => $query->where('type', $type))
             ->when($filters['conseiller'] ?? null, fn ($query, int $id) => $query->where('assigned_to', $id))
             ->when($filters['a_rappeler'] ?? null, fn ($query) => $query->open()->whereDate('callback_on', '<=', today()))

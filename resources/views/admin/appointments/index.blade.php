@@ -29,7 +29,7 @@
                 label="Statut"
                 :options="\App\Enums\AppointmentStatus::options()"
                 :value="$filters['statut'] ?? null"
-                :empty-option="__('admin.common.all')"
+                :empty-option="__('admin.common.except_archived')"
             />
 
             <x-field
