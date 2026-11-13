@@ -47,6 +47,8 @@
                 ['route' => 'admin.testimonials.index', 'label' => __('admin.nav.testimonials'), 'permission' => Permission::ManageContent],
                 ['route' => 'admin.pricings.index', 'label' => __('admin.nav.pricings'), 'permission' => Permission::ManageContent],
                 ['route' => 'admin.official-links.index', 'label' => __('admin.nav.official_links'), 'permission' => Permission::ManageContent],
+                ['route' => 'admin.search-synonyms.index', 'label' => __('admin.nav.search_synonyms'), 'permission' => Permission::ManageContent],
+                ['route' => 'admin.missed-searches.index', 'label' => __('admin.nav.missed_searches'), 'permission' => Permission::ManageContent],
             ],
         ],
         'directory' => [

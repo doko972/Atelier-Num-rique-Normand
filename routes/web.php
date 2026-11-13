@@ -86,6 +86,10 @@ Route::get('/gestion-des-cookies', [Site\PageController::class, 'system'])
     ->defaults('key', Page::KEY_COOKIES)
     ->name('cookies');
 
+Route::get('/rechercher', Site\SearchController::class)
+    ->middleware('throttle:recherche')
+    ->name('search');
+
 Route::get('/documents/{file}', Site\DownloadController::class)->name('files.download');
 
 Route::get('/sitemap.xml', [Site\SitemapController::class, 'sitemap'])->name('sitemap');
@@ -279,6 +283,7 @@ Route::prefix('administration')
                 'pricings' => Admin\PricingController::class,
                 'official-links' => Admin\OfficialLinkController::class,
                 'workshop-categories' => Admin\WorkshopCategoryController::class,
+                'search-synonyms' => Admin\SearchSynonymController::class,
             ] as $segment => $controller) {
                 Route::prefix($segment)
                     ->name("{$segment}.")
@@ -294,6 +299,17 @@ Route::prefix('administration')
                     });
             }
         });
+
+        // -- Recherches sans réponse ---------------------------------------------
+        Route::middleware('permission:'.Permission::ManageContent->value)
+            ->prefix('recherches-sans-reponse')
+            ->name('missed-searches.')
+            ->controller(Admin\MissedSearchController::class)
+            ->group(function (): void {
+                Route::get('/', 'index')->name('index');
+                Route::delete('/', 'clear')->name('clear');
+                Route::delete('/{missedSearch}', 'destroy')->name('destroy');
+            });
 
         // -- Communes, lieux et partenaires --------------------------------------
         Route::middleware('permission:'.Permission::ManageDirectory->value)->group(function (): void {

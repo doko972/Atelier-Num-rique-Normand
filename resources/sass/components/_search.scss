@@ -1,0 +1,81 @@
+// =============================================================================
+// Recherche du site public
+// =============================================================================
+@use '../abstracts' as a;
+
+.search-form {
+    margin-top: a.$space-sm;
+}
+
+.search-form__label {
+    display: block;
+    font-weight: a.$font-weight-bold;
+    font-size: a.$font-size-lg;
+    margin-bottom: a.$space-2xs;
+}
+
+// Champ et bouton côte à côte dès qu'il y a la place ; empilés sur un
+// téléphone, pour garder un champ assez large pour lire ce qu'on a tapé.
+.search-form__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: a.$space-2xs;
+
+    .btn {
+        flex: none;
+    }
+}
+
+.search-form__input {
+    flex: 1 1 16rem;
+    min-width: 0;
+    font-size: a.$font-size-lg;
+}
+
+.search-results {
+    list-style: none;
+    padding: 0;
+    margin: a.$space-md 0 0;
+}
+
+.search-result {
+    padding-block: a.$space-sm;
+    border-bottom: var(--border-width) solid var(--color-border);
+
+    &:first-child {
+        border-top: var(--border-width) solid var(--color-border);
+    }
+}
+
+.search-result__type {
+    font-size: a.$font-size-sm;
+    font-weight: a.$font-weight-bold;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0;
+}
+
+.search-result__title {
+    font-size: a.$font-size-xl;
+    margin: a.$space-3xs 0;
+}
+
+.search-result__summary {
+    margin: 0;
+}
+
+.search-examples {
+    list-style: none;
+    padding: 0;
+
+    li + li {
+        margin-top: a.$space-2xs;
+    }
+
+    a {
+        display: inline-block;
+        @include a.touch-target;
+        padding-block: a.$space-3xs;
+    }
+}

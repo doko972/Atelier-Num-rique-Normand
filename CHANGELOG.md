@@ -32,10 +32,36 @@ Les migrations destructives sont signalées explicitement.
 - Nouvelle permission `manage_interventions`, détenue par les
   administrateurs uniquement.
 
+### Ajouté — recherche sur le site public
+
+- Page `/rechercher`, bouton « Rechercher » dans l'en-tête (repris en tête
+  du menu sur téléphone) et champ de recherche sur l'accueil.
+- Recherche tolérante, faite pour des visiteurs qui écrivent comme ils
+  parlent : accents, majuscules et pluriels ignorés, début de mot suffisant
+  (« ordi »), faute de frappe d'une lettre admise, mots vides écartés
+  (« comment », « mon », « aide »).
+- Cherche dans les services, fiches pratiques (étapes comprises), articles,
+  questions fréquentes, ateliers à venir et pages éditoriales, plus des
+  raccourcis vers les pages fixes (« combien » mène aux tarifs).
+- **Dictionnaire de synonymes** administrable (*Contenus › Synonymes de
+  recherche*), amorcé avec une vingtaine de groupes : « mail » trouve
+  « courriel », « lent » trouve « libérer de l'espace ».
+- **Recherches sans réponse** relevées (*Contenus › Recherches sans
+  réponse*), sans adresse IP ; une recherche contenant une adresse
+  électronique ou un numéro n'est pas conservée. Purge automatique après
+  un an (`model:prune`, mensuel).
+- Aucun résultat : message rassurant, appel au téléphone, exemples de
+  recherches et rubriques.
+- Page de résultats exclue des moteurs de recherche, limitée à 30
+  recherches par minute et par adresse.
+
 ### Déploiement
 
-- Migration `2026_11_13_000100_create_interventions_table` (non
-  destructive) puis `db:seed --force` pour la permission et le paramètre.
+- Migrations `2026_11_13_000100_create_interventions_table` et
+  `2026_11_13_000200_create_search_tables` (non destructives), puis
+  `db:seed --force` pour la permission, le paramètre et les synonymes.
+- **Feuilles de style modifiées** : reconstruire `public/build` en local
+  (`npm run build`) et le téléverser.
 
 ---
 

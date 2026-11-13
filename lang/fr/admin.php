@@ -36,6 +36,8 @@ return [
         'testimonials' => 'Témoignages',
         'pricings' => 'Tarifs',
         'official_links' => 'Liens officiels',
+        'search_synonyms' => 'Synonymes de recherche',
+        'missed_searches' => 'Recherches sans réponse',
         'municipalities' => 'Communes',
         'locations' => 'Lieux d’accueil',
         'partners' => 'Partenaires',
@@ -160,6 +162,22 @@ return [
         'interventions_help' => 'Enregistrez ici ce qui a été fait et facturé : c’est ce qui alimente le suivi SAP / hors SAP.',
         'interventions_none' => 'Aucune prestation enregistrée pour cette demande.',
         'record_intervention' => 'Enregistrer une prestation',
+    ],
+
+    'missed_searches' => [
+        'title' => 'Recherches sans réponse',
+        'intro' => 'Ce que des visiteurs ont cherché sur le site sans rien trouver, avec leurs propres mots. Ajoutez un synonyme quand le sujet existe sous un autre nom ; sinon, c’est peut-être une fiche pratique à écrire. Les entrées de plus d’un an sont effacées d’elles-mêmes.',
+        'empty' => 'Aucune recherche sans réponse pour le moment.',
+        'query' => 'Recherche',
+        'hits' => 'Nombre de fois',
+        'last' => 'Dernière fois',
+        'add_synonym' => 'Ajouter un synonyme',
+        'retry' => 'Relancer',
+        'dismiss' => 'Retirer',
+        'deleted' => 'La recherche a été retirée de la liste.',
+        'clear' => 'Vider la liste',
+        'clear_confirm' => 'Toutes les recherches sans réponse seront effacées. Confirmez-vous ?',
+        'cleared' => 'La liste a été vidée.',
     ],
 
     'interventions' => [

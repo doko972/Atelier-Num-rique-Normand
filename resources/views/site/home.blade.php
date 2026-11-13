@@ -65,6 +65,15 @@
         </div>
     </section>
 
+    {{-- ===================== Recherche ===================== --}}
+    <section class="section section--tight" aria-labelledby="titre-recherche">
+        <div class="container container--narrow">
+            <h2 id="titre-recherche" class="visually-hidden">{{ __('site.search.title') }}</h2>
+
+            @include('partials.search-form', ['id' => 'recherche-accueil'])
+        </div>
+    </section>
+
     {{-- ===================== Réassurance ===================== --}}
     <section class="section section--surface">
         <div class="container">

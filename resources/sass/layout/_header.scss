@@ -137,6 +137,46 @@
 }
 
 // -----------------------------------------------------------------------------
+// Lien de recherche — toujours avec son libellé : la loupe seule n'est pas
+// comprise de tous.
+// -----------------------------------------------------------------------------
+.site-header__search {
+    // Masqué sur les très petits écrans, où il est repris en tête du menu.
+    display: none;
+    align-items: center;
+    gap: a.$space-3xs;
+    @include a.touch-target;
+    padding-inline: a.$space-xs;
+    border: 2px solid var(--color-primary);
+    border-radius: a.$radius-md;
+    background-color: var(--color-surface);
+    color: var(--color-primary);
+    font-weight: a.$font-weight-bold;
+    text-decoration: none;
+    white-space: nowrap;
+
+    @include a.from('sm') {
+        display: inline-flex;
+    }
+
+    &:hover,
+    &:focus,
+    &[aria-current='page'] {
+        background-color: var(--color-primary-light);
+        color: var(--color-primary);
+        text-decoration: none;
+    }
+}
+
+// Entrée de menu réservée aux petits écrans : au-delà, le bouton de l'en-tête
+// fait le même office.
+.main-nav__item--small-screens {
+    @include a.from('sm') {
+        display: none;
+    }
+}
+
+// -----------------------------------------------------------------------------
 // Bouton de menu
 // -----------------------------------------------------------------------------
 .site-header__toggle {

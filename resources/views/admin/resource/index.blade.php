@@ -104,6 +104,8 @@
                                             <x-badge :variant="method_exists($value, 'badgeVariant') ? $value->badgeVariant() : 'neutral'">
                                                 {{ method_exists($value, 'label') ? $value->label() : $value->value }}
                                             </x-badge>
+                                        @elseif (is_array($value))
+                                            {{ \Illuminate\Support\Str::limit(implode(', ', $value), 90) ?: '—' }}
                                         @elseif ($field->listFormat === 'money')
                                             {{ $value === null ? '—' : \Illuminate\Support\Number::currency($value / 100, 'EUR', 'fr') }}
                                         @elseif ($value instanceof \DateTimeInterface)

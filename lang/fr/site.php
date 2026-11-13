@@ -36,6 +36,73 @@ return [
         'contact' => 'Contact',
         'appointment' => 'Prendre rendez-vous',
         'faq' => 'Questions fréquentes',
+        'search' => 'Rechercher',
+    ],
+
+    'search' => [
+        'title' => 'Rechercher sur le site',
+        'results_title' => 'Résultats pour « :query »',
+        'intro' => 'Écrivez votre question avec vos mots, comme vous la poseriez à voix haute. Par exemple : « mon ordinateur est lent » ou « arnaque par SMS ».',
+        'label' => 'Que cherchez-vous ?',
+        'placeholder' => 'Par exemple : envoyer une photo',
+        'submit' => 'Rechercher',
+        'count' => '{1} Une réponse trouvée.|[2,*] :count réponses trouvées, les plus utiles en premier.',
+        'none_title' => 'Je n’ai rien trouvé pour « :query ».',
+        'none_text' => 'Ce n’est pas grave : essayez avec d’autres mots, ou plus simplement un seul mot. Vous pouvez aussi m’appeler, je vous oriente directement.',
+        'phone_text' => 'Dites-moi simplement ce qui vous arrive : je vous oriente vers la bonne fiche, ou nous en parlons ensemble.',
+        'examples_title' => 'Exemples de recherches',
+        'examples' => [
+            'Reconnaître une arnaque',
+            'Envoyer une photo',
+            'Déclarer ses impôts',
+            'Mot de passe oublié',
+            'Faire un appel vidéo',
+            'Combien ça coûte',
+        ],
+        'browse_title' => 'Ou parcourez les rubriques',
+        'types' => [
+            'page' => 'Page',
+            'service' => 'Ce que je vous apprends',
+            'guide' => 'Fiche pratique',
+            'article' => 'Article',
+            'faq' => 'Question fréquente',
+            'workshop' => 'Atelier',
+        ],
+
+        // Pages fixes du site, avec les mots que les visiteurs emploient
+        // pour les désigner : « combien », « prix » mènent aux tarifs.
+        'shortcuts' => [
+            [
+                'title' => 'Tarifs',
+                'summary' => 'Les prix des séances, des forfaits et des ateliers, annoncés à l’avance.',
+                'route' => 'pricing',
+                'keywords' => 'tarif prix combien coute cout payer paiement argent euros cher gratuit facture devis',
+            ],
+            [
+                'title' => 'Prendre rendez-vous',
+                'summary' => 'Demandez une séance chez vous ou près de chez vous. Je vous rappelle pour fixer la date.',
+                'route' => 'appointments.create',
+                'keywords' => 'rendez vous rdv reserver reservation seance venir domicile maison chez moi',
+            ],
+            [
+                'title' => 'Contact',
+                'summary' => 'Me poser une question par téléphone, par SMS ou par écrit.',
+                'route' => 'contact.create',
+                'keywords' => 'contact contacter joindre appeler telephone numero question message ecrire',
+            ],
+            [
+                'title' => 'Ateliers collectifs',
+                'summary' => 'Les prochains ateliers en petit groupe, près de chez vous.',
+                'route' => 'workshops.index',
+                'keywords' => 'atelier ateliers groupe cours collectif formation inscription',
+            ],
+            [
+                'title' => 'Questions fréquentes',
+                'summary' => 'Les réponses aux questions qu’on me pose le plus souvent.',
+                'route' => 'faq',
+                'keywords' => 'question questions frequentes faq reponse',
+            ],
+        ],
     ],
 
     'a11y' => [

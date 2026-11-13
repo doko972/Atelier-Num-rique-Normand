@@ -19,6 +19,7 @@ use App\Models\Partner;
 use App\Models\PartnershipRequest;
 use App\Models\PracticalGuide;
 use App\Models\Pricing;
+use App\Models\SearchSynonym;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\Testimonial;
@@ -69,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
         Municipality::class,
         Location::class,
         Partner::class,
+        SearchSynonym::class,
     ];
 
     public function register(): void
@@ -155,6 +157,12 @@ class AppServiceProvider extends ServiceProvider
         )->by($request->ip())->response(
             fn (): Response => response()->view('errors.429', [], 429),
         ));
+
+        // Large pour une personne, mais borne le relevé des recherches
+        // infructueuses face à un robot qui enverrait des milliers de mots.
+        RateLimiter::for('recherche', fn (Request $request): Limit => Limit::perMinute(30)
+            ->by($request->ip())
+            ->response(fn (): Response => response()->view('errors.429', [], 429)));
 
         RateLimiter::for('connexion', fn (Request $request): Limit => Limit::perMinutes(
             (int) config('site.security.login.decay_minutes'),

@@ -5,7 +5,7 @@
     proposé à côté de chaque formulaire, pour que personne ne reste bloqué
     devant un champ qu'il ne comprend pas.
 --}}
-@props(['variant' => 'default'])
+@props(['variant' => 'default', 'text' => null])
 
 @php $settings = app(\App\Services\SettingsService::class); @endphp
 
@@ -13,7 +13,7 @@
     <div {{ $attributes->merge(['class' => 'form__phone-fallback']) }}>
         <h2 class="h4">{{ __('site.common.phone_fallback_title') }}</h2>
 
-        <p>{{ __('site.common.phone_fallback_text') }}</p>
+        <p>{{ $text ?? __('site.common.phone_fallback_text') }}</p>
 
         <p>
             <a class="btn btn--secondary btn--lg" href="{{ $settings->phoneLink() }}">

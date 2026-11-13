@@ -37,6 +37,22 @@
         </a>
 
         <div class="site-header__actions">
+            {{--
+                Un lien vers la page de recherche plutôt qu'un champ dans
+                l'en-tête : l'en-tête reste fixe en haut de l'écran, et un
+                champ de plus le rendrait trop haut sur un téléphone. Le mot
+                « Rechercher » accompagne toujours la loupe, que tout le
+                monde ne reconnaît pas.
+            --}}
+            <a
+                class="site-header__search"
+                href="{{ route('search') }}"
+                @if (request()->routeIs('search')) aria-current="page" @endif
+            >
+                <x-icon name="loupe" width="20" height="20" />
+                <span>{{ __('site.nav.search') }}</span>
+            </a>
+
             @if ($settings->hasPhone())
                 <a class="site-header__phone" href="{{ $settings->phoneLink() }}">
                     <x-icon name="telephone" width="20" height="20" />
@@ -85,6 +101,17 @@
 
             <nav aria-labelledby="titre-menu">
                 <ul class="main-nav__list">
+                    {{-- Sur téléphone, le bouton de l'en-tête laisserait trop
+                         peu de place au nom du service : la recherche ouvre
+                         alors le menu. --}}
+                    <li class="main-nav__item--small-screens">
+                        <a
+                            class="main-nav__link"
+                            href="{{ route('search') }}"
+                            @if (request()->routeIs('search')) aria-current="page" @endif
+                        >{{ __('site.search.title') }}</a>
+                    </li>
+
                     @foreach ($links as $link)
                         <li>
                             <a

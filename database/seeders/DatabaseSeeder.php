@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
                 ServiceSeeder::class,
                 ResourceSeeder::class,
                 AiLiteracySeeder::class,
+                SearchSynonymSeeder::class,
             ]);
         });
     }

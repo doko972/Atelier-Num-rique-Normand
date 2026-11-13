@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\MissedSearch;
 use Illuminate\Support\Facades\Schedule;
 
 /*
@@ -42,4 +43,10 @@ Schedule::command('auth:clear-resets')
 // Suppression des tâches en échec conservées plus d'un mois.
 Schedule::command('queue:prune-failed --hours=720')
     ->weekly()
+    ->onOneServer();
+
+// Recherches sans réponse de plus d'un an : elles ne renseignent plus sur le
+// site tel qu'il est.
+Schedule::command('model:prune', ['--model' => [MissedSearch::class]])
+    ->monthly()
     ->onOneServer();
