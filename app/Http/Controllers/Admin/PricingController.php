@@ -30,7 +30,7 @@ class PricingController extends AbstractResourceController
             'title' => 'Tarifs',
             'singular' => 'le tarif',
             'plural' => 'tarifs',
-            'intro' => 'Indiquez toujours ce qui est inclus, la durée et les éventuels frais de déplacement. N’affichez aucun avantage fiscal sans validation juridique.',
+            'intro' => 'Indiquez toujours ce qui est inclus, la durée et les éventuels frais de déplacement. N’écrivez aucun avantage fiscal dans les textes : le crédit d’impôt s’affiche seul sur les tarifs éligibles SAP, une fois la déclaration obtenue.',
         ];
     }
 
@@ -56,6 +56,9 @@ class PricingController extends AbstractResourceController
             Field::textarea('cancellation_policy', 'Conditions d’annulation', ['nullable', 'string', 'max:600']),
             Field::boolean('is_quote_only', 'Uniquement sur devis'),
             Field::boolean('is_highlighted', 'Mettre en avant'),
+            Field::boolean('sap_eligible', 'Éligible aux services à la personne',
+                'Uniquement pour une prestation réalisée au domicile d’un particulier. Le crédit d’impôt ne s’affiche sur le site qu’une fois le numéro de déclaration SAP renseigné dans les paramètres.')
+                ->listed(),
             Field::select('status', 'Statut', ContentStatus::options())->listed(),
             Field::number('position', 'Ordre d’affichage')->listed(),
         ];

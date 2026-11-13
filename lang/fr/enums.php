@@ -39,6 +39,19 @@ return [
         'manage_gdpr_requests' => 'Traiter les demandes RGPD',
         'view_audit_log' => 'Consulter le journal des actions',
         'export_data' => 'Exporter les données',
+        'manage_interventions' => 'Gérer les prestations réalisées et le suivi SAP',
+    ],
+
+    'intervention_activity' => [
+        'home_training' => 'Formation informatique à domicile',
+        'home_installation' => 'Installation de PC à domicile',
+        'home_maintenance' => 'Maintenance logicielle à domicile',
+        'home_administrative' => 'Assistance administrative à domicile',
+        'remote' => 'Assistance à distance (téléphone, visio)',
+        'partner_location' => 'Accompagnement hors domicile (lieu partenaire)',
+        'workshop' => 'Atelier collectif',
+        'organisation' => 'Intervention pour une collectivité, une association ou une entreprise',
+        'other' => 'Autre prestation hors SAP',
     ],
 
     'content_status' => [

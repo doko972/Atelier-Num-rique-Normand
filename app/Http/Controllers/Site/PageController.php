@@ -137,10 +137,15 @@ class PageController extends Controller
         ]);
     }
 
-    public function pricing(): View
+    public function pricing(SettingsService $settings): View
     {
         return view('site.pages.pricing', [
             'pricings' => Pricing::query()->published()->ordered()->get(),
+            // Aucun avantage fiscal n'est annoncé tant que la déclaration SAP
+            // n'est pas obtenue.
+            'sapNumber' => $settings->isSapDeclared()
+                ? trim($settings->string('sap_declaration_number'))
+                : null,
         ]);
     }
 

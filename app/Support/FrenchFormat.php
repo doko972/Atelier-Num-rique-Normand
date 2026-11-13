@@ -6,6 +6,7 @@ namespace App\Support;
 
 use Carbon\CarbonImmutable;
 use DateTimeInterface;
+use Illuminate\Support\Number;
 
 /**
  * Mise en forme des dates et des heures en français.
@@ -87,6 +88,38 @@ final class FrenchFormat
             'date' => $moment->locale('fr')->isoFormat('dddd D MMMM YYYY'),
             'time' => $moment->format('H\\hi'),
         ]);
+    }
+
+    /**
+     * Durée : « 3 h », « 12 h 30 », « 45 min ».
+     */
+    public static function duration(int $minutes): string
+    {
+        $hours = intdiv($minutes, 60);
+        $rest = $minutes % 60;
+
+        return match (true) {
+            $hours === 0 => "{$rest} min",
+            $rest === 0 => "{$hours} h",
+            default => sprintf('%d h %02d', $hours, $rest),
+        };
+    }
+
+    /**
+     * Montant en centimes, affiché en euros : « 1 234,50 € ».
+     */
+    public static function money(int $cents): string
+    {
+        return Number::currency($cents / 100, 'EUR', 'fr');
+    }
+
+    /**
+     * Montant pour un tableur : « 1234,50 », sans symbole ni séparateur de
+     * milliers, pour rester calculable.
+     */
+    public static function decimal(int $cents): string
+    {
+        return number_format($cents / 100, 2, ',', '');
     }
 
     private static function toCarbon(DateTimeInterface|string $value): CarbonImmutable

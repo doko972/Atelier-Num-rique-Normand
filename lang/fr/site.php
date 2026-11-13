@@ -300,6 +300,22 @@ return [
         'cancellation' => 'Annulation',
         'empty' => 'Les tarifs sont en cours de mise à jour. Appelez-moi, je vous renseigne.',
         'quote_cta' => 'Demander un devis',
+
+        // Affichés uniquement une fois le numéro de déclaration SAP
+        // renseigné dans les paramètres.
+        'sap_badge' => 'Crédit d’impôt de 50 %',
+        'sap_after_credit' => 'Soit :amount après crédit d’impôt, pour une séance à votre domicile.',
+        'sap_title' => 'Le crédit d’impôt, pour l’aide à votre domicile',
+        'sap_intro' => 'Je suis déclaré organisme de services à la personne (n° :number). Pour l’aide que je vous apporte chez vous, vous récupérez 50 % des sommes payées sous forme de crédit d’impôt. Même si vous ne payez pas d’impôt sur le revenu : le Trésor public vous rembourse alors la somme.',
+        'sap_eligible_title' => 'Ouvre droit au crédit d’impôt',
+        'sap_not_eligible_title' => 'N’y ouvre pas droit',
+        'sap_not_eligible' => [
+            'L’aide par téléphone ou en visio',
+            'Les séances dans une salle ou un lieu partenaire',
+            'Les ateliers collectifs',
+            'Les interventions pour une mairie, une association ou une entreprise',
+        ],
+        'sap_ceiling' => 'Pour l’assistance informatique, le crédit d’impôt porte sur 3 000 € de dépenses au plus par an et par foyer. Je vous remets chaque année une attestation fiscale à joindre à votre déclaration de revenus.',
     ],
 
     'resources' => [

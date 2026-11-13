@@ -124,6 +124,14 @@ class Appointment extends Model
         return $this->hasMany(AppointmentNote::class)->latest();
     }
 
+    /**
+     * Prestations facturées à la suite de cette demande.
+     */
+    public function interventions(): HasMany
+    {
+        return $this->hasMany(Intervention::class)->orderBy('performed_on');
+    }
+
     public function consentLogs(): MorphMany
     {
         return $this->morphMany(ConsentLog::class, 'consentable');

@@ -43,6 +43,7 @@ class Pricing extends Model
         'cancellation_policy',
         'is_quote_only',
         'is_highlighted',
+        'sap_eligible',
         'status',
         'position',
     ];
@@ -58,7 +59,21 @@ class Pricing extends Model
             'position' => 'integer',
             'is_quote_only' => 'boolean',
             'is_highlighted' => 'boolean',
+            'sap_eligible' => 'boolean',
         ];
+    }
+
+    /**
+     * Ce que le client paie réellement une fois le crédit d'impôt de 50 %
+     * déduit, ou null si le tarif n'y ouvre pas droit.
+     */
+    public function formattedAmountAfterTaxCredit(): ?string
+    {
+        if (! $this->sap_eligible || $this->is_quote_only || ! $this->amount_cents) {
+            return null;
+        }
+
+        return Number::currency(intdiv($this->amount_cents, 2) / 100, 'EUR', 'fr');
     }
 
     public function slugSourceField(): string

@@ -10,6 +10,7 @@ use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\ContactRequest;
 use App\Models\Faq;
+use App\Models\Intervention;
 use App\Models\Location;
 use App\Models\Municipality;
 use App\Models\OfficialLink;
@@ -27,6 +28,7 @@ use App\Models\WorkshopCategory;
 use App\Models\WorkshopRegistration;
 use App\Policies\AppointmentPolicy;
 use App\Policies\ContentPolicy;
+use App\Policies\InterventionPolicy;
 use App\Policies\RequestPolicy;
 use App\Policies\UserPolicy;
 use App\Policies\WorkshopPolicy;
@@ -118,6 +120,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(ContactRequest::class, RequestPolicy::class);
         Gate::policy(PartnershipRequest::class, RequestPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(Intervention::class, InterventionPolicy::class);
 
         foreach (self::CONTENT_MODELS as $model) {
             Gate::policy($model, ContentPolicy::class);

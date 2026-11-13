@@ -65,7 +65,8 @@ class RoleSeeder extends Seeder
             PermissionEnum::ManageUsers,
             PermissionEnum::ManageSettings,
             PermissionEnum::ManageGdprRequests,
-            PermissionEnum::ViewAuditLog => 'administration',
+            PermissionEnum::ViewAuditLog,
+            PermissionEnum::ManageInterventions => 'administration',
 
             default => 'general',
         };

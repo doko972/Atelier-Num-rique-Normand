@@ -223,6 +223,18 @@ class SettingSeeder extends Seeder
                 'label' => 'Hébergeur du site',
                 'help' => 'Nom, adresse et moyen de contact, comme l’exige la loi.',
             ],
+            [
+                // Vide tant que la déclaration n'est pas obtenue : annoncer un
+                // crédit d'impôt sans être déclaré serait une pratique
+                // commerciale trompeuse, et priverait le client de son
+                // attestation fiscale. Le site n'affiche donc l'avantage
+                // fiscal qu'une fois ce numéro renseigné.
+                'key' => 'sap_declaration_number',
+                'value' => '',
+                'group' => 'legal',
+                'label' => 'Numéro de déclaration services à la personne',
+                'help' => 'Le numéro SAP délivré par la DDETS (exemple : SAP939474755). Tant qu’il est vide, le site n’annonce aucun crédit d’impôt.',
+            ],
         ];
     }
 

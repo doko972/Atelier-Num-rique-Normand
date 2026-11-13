@@ -172,6 +172,61 @@ semoir resterait sans effet et prêterait à confusion.
 
 ---
 
+## 6. Le suivi SAP / hors SAP dans le back-office
+
+### Ce qui classe une prestation
+
+**Le lieu, pas le sujet.** Une heure de formation informatique est SAP chez
+le client, hors SAP au téléphone ou dans la salle d'une mairie. C'est
+pourquoi la nature d'une prestation se choisit parmi des intitulés qui
+portent le lieu (« … à domicile »), plutôt qu'avec une case à cocher qu'on
+oublierait.
+
+| Nature | SAP | Activité déclarée |
+|---|---|---|
+| Formation informatique à domicile | oui | Assistance informatique |
+| Installation de PC à domicile | oui | Assistance informatique |
+| Maintenance logicielle à domicile | oui | Assistance informatique |
+| Assistance administrative à domicile | oui | Assistance administrative |
+| Assistance à distance | non | — |
+| Accompagnement en lieu partenaire | non | — |
+| Atelier collectif | non | — |
+| Intervention pour une structure | non | — |
+
+L'assistance informatique et l'assistance administrative sont deux activités
+SAP distinctes : elles se déclarent séparément, et seule la première est
+soumise au plafond de 3 000 € par foyer.
+
+### Les deux mesures du bilan
+
+- **La part de l'année en cours** — la règle des 70 / 30 au quotidien.
+- **Le plafond légal** — CA hors SAP de l'année ≤ 30 % du CA total de
+  l'année précédente. Le bilan affiche la marge restante en euros : c'est le
+  chiffre à regarder avant d'accepter une commande d'une collectivité.
+
+L'alerte se déclenche dès que l'une des deux atteint 80 % de la limite. La
+première année, faute d'année précédente, seule la part est suivie.
+
+### Ce que le registre n'est pas
+
+Ni un logiciel de facturation, ni le livre des recettes. Il doit concorder
+avec eux, sans les remplacer. Il retient la **date de la prestation** : si
+une facture est réglée beaucoup plus tard, vérifier avec la DDETS ou le
+comptable quelle date retenir pour le chiffre d'affaires.
+
+Les noms des clients y sont conservés comme pièces comptables (dix ans),
+même après anonymisation ou effacement de la demande de rendez-vous.
+
+### Le crédit d'impôt sur le site
+
+Rien ne s'affiche tant que le paramètre *Numéro de déclaration services à
+la personne* est vide. Une fois renseigné, la page Tarifs montre le badge et
+le prix après crédit sur les tarifs cochés « Éligible aux services à la
+personne », ainsi qu'un encadré qui sépare ce qui y ouvre droit de ce qui
+n'y ouvre pas droit.
+
+---
+
 ## Sources
 
 - [Crédit d'impôt pour l'emploi d'un salarié à domicile — economie.gouv.fr](https://www.economie.gouv.fr/particuliers/gerer-mon-argent/beneficier-daides-et-de-reductions-dimpots/tout-savoir-sur-le-credit-dimpot-lie-lemploi-dun-salarie-domicile)

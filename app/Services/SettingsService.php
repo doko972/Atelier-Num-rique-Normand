@@ -47,6 +47,7 @@ class SettingsService
         'publication_director' => '',
         'hosting_provider' => '',
         'social_facebook' => '',
+        'sap_declaration_number' => '',
     ];
 
     /**
@@ -133,6 +134,16 @@ class SettingsService
     public function phoneDisplay(): string
     {
         return $this->string('phone_display') ?: $this->string('phone');
+    }
+
+    /**
+     * L'activité est-elle déclarée services à la personne ?
+     *
+     * Conditionne tout affichage du crédit d'impôt sur le site public.
+     */
+    public function isSapDeclared(): bool
+    {
+        return filled(trim($this->string('sap_declaration_number')));
     }
 
     public function hasPhone(): bool

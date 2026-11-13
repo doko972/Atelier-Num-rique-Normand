@@ -77,10 +77,21 @@
                 <option value="">{{ $emptyOption }}</option>
             @endif
 
+            {{-- Une valeur tableau forme un groupe d'options (`<optgroup>`). --}}
             @foreach ($options as $optionValue => $optionLabel)
-                <option value="{{ $optionValue }}" @selected((string) $current === (string) $optionValue)>
-                    {{ $optionLabel }}
-                </option>
+                @if (is_array($optionLabel))
+                    <optgroup label="{{ $optionValue }}">
+                        @foreach ($optionLabel as $groupValue => $groupLabel)
+                            <option value="{{ $groupValue }}" @selected((string) $current === (string) $groupValue)>
+                                {{ $groupLabel }}
+                            </option>
+                        @endforeach
+                    </optgroup>
+                @else
+                    <option value="{{ $optionValue }}" @selected((string) $current === (string) $optionValue)>
+                        {{ $optionLabel }}
+                    </option>
+                @endif
             @endforeach
         </select>
     @else

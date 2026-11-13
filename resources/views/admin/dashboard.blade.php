@@ -65,11 +65,26 @@
     <section class="admin-panel" aria-labelledby="alertes">
         <h2 class="admin-panel__title" id="alertes">{{ __('admin.dashboard.alerts_title') }}</h2>
 
-        @php $hasAlerts = $overdueGdpr > 0 || $guidesNeedingReview->isNotEmpty() || $overdueCallbacks->isNotEmpty(); @endphp
+        @php
+            $sapAlert = $sapSummary?->needsAttention() ?? false;
+            $hasAlerts = $overdueGdpr > 0 || $guidesNeedingReview->isNotEmpty() || $overdueCallbacks->isNotEmpty() || $sapAlert;
+        @endphp
 
         @unless ($hasAlerts)
             <p class="text-muted">{{ __('admin.dashboard.no_alerts') }}</p>
         @endunless
+
+        @if ($sapAlert)
+            <x-alert :variant="$sapSummary->status() === 'over' ? 'danger' : 'warning'">
+                <p>
+                    {{ __('admin.dashboard.sap_alert', [
+                        'share' => number_format((float) $sapSummary->otherShare(), 1, ',', ' '),
+                        'year' => $sapSummary->year,
+                    ]) }}
+                    <a href="{{ route('admin.interventions.report') }}">{{ __('admin.nav.sap_report') }}</a>
+                </p>
+            </x-alert>
+        @endif
 
         @if ($overdueGdpr > 0)
             <x-alert variant="danger">

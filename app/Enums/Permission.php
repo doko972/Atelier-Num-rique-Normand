@@ -29,4 +29,7 @@ enum Permission: string
     case ManageGdprRequests = 'manage_gdpr_requests';
     case ViewAuditLog = 'view_audit_log';
     case ExportData = 'export_data';
+    // Chiffre d'affaires de l'activité : réservé à l'administration, comme
+    // la comptabilité dont il fait partie.
+    case ManageInterventions = 'manage_interventions';
 }

@@ -197,6 +197,37 @@
                 </form>
             </section>
 
+            {{-- ============ Prestations réalisées ============ --}}
+            @can('viewAny', \App\Models\Intervention::class)
+                <section class="admin-panel" aria-labelledby="prestations">
+                    <h2 class="admin-panel__title" id="prestations">{{ __('admin.appointments.interventions_title') }}</h2>
+
+                    @if ($appointment->interventions->isEmpty())
+                        <p class="text-small text-muted">{{ __('admin.appointments.interventions_none') }}</p>
+                    @else
+                        <ul role="list" class="stack--sm stack text-small">
+                            @foreach ($appointment->interventions as $intervention)
+                                <li>
+                                    <a href="{{ route('admin.interventions.edit', $intervention) }}">
+                                        {{ $intervention->performed_on->format('d/m/Y') }} — {{ $intervention->formattedAmount() }}
+                                    </a>
+                                    <x-badge :variant="$intervention->activity->badgeVariant()">
+                                        {{ $intervention->isSap() ? 'SAP' : 'Hors SAP' }}
+                                    </x-badge><br>
+                                    <span class="text-muted">{{ $intervention->activity->label() }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+
+                    <p class="text-small text-muted" style="margin-top: 0.75rem">{{ __('admin.appointments.interventions_help') }}</p>
+
+                    <a class="btn btn--outline btn--block" href="{{ route('admin.interventions.create', ['rendez_vous' => $appointment->id]) }}">
+                        {{ __('admin.appointments.record_intervention') }}
+                    </a>
+                </section>
+            @endcan
+
             {{-- ============ Affectation ============ --}}
             <section class="admin-panel" aria-labelledby="affectation">
                 <h2 class="admin-panel__title" id="affectation">{{ __('admin.appointments.assignee') }}</h2>

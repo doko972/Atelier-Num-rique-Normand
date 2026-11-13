@@ -175,6 +175,24 @@ Route::prefix('administration')
                 Route::delete('/{appointment}', 'destroy')->name('destroy');
             });
 
+        // -- Prestations réalisées et suivi SAP ------------------------------
+        Route::middleware('permission:'.Permission::ManageInterventions->value)
+            ->prefix('prestations')
+            ->name('interventions.')
+            ->controller(Admin\InterventionController::class)
+            ->group(function (): void {
+                Route::get('/', 'index')->name('index');
+                Route::get('/export', 'export')->name('export');
+                Route::get('/bilan-sap', 'report')->name('report');
+                Route::get('/bilan-sap/export', 'exportReport')->name('report.export');
+                Route::get('/nouvelle', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{intervention}/modifier', 'edit')->name('edit');
+                Route::put('/{intervention}', 'update')->name('update');
+                Route::delete('/{intervention}', 'destroy')->name('destroy');
+                Route::post('/{id}/restaurer', 'restore')->name('restore');
+            });
+
         // -- Ateliers -------------------------------------------------------
         Route::middleware('permission:'.Permission::ManageWorkshops->value)
             ->prefix('ateliers')

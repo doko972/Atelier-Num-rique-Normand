@@ -30,6 +30,8 @@
                 ['route' => 'admin.registrations.index', 'label' => __('admin.nav.registrations'), 'permission' => Permission::ManageRegistrations],
                 ['route' => 'admin.contact-requests.index', 'label' => __('admin.nav.contact_requests'), 'permission' => Permission::ManageContactRequests, 'count' => $counts['contact_requests']],
                 ['route' => 'admin.partnership-requests.index', 'label' => __('admin.nav.partnership_requests'), 'permission' => Permission::ManagePartnershipRequests, 'count' => $counts['partnership_requests']],
+                ['route' => 'admin.interventions.index', 'label' => __('admin.nav.interventions'), 'permission' => Permission::ManageInterventions],
+                ['route' => 'admin.interventions.report', 'label' => __('admin.nav.sap_report'), 'permission' => Permission::ManageInterventions],
             ],
         ],
         'content' => [

@@ -273,6 +273,7 @@ class ServiceSeeder extends Seeder
             [
                 'label' => 'Accompagnement individuel',
                 'slug' => 'accompagnement-individuel',
+                'sap_eligible' => true,
                 'model' => PricingModel::Hourly,
                 'amount_cents' => 3500,
                 'unit' => 'par heure',
@@ -290,6 +291,7 @@ class ServiceSeeder extends Seeder
             [
                 'label' => 'Forfait découverte',
                 'slug' => 'forfait-decouverte',
+                'sap_eligible' => true,
                 'model' => PricingModel::Discovery,
                 'amount_cents' => 2000,
                 'unit' => 'la première séance',
@@ -302,6 +304,7 @@ class ServiceSeeder extends Seeder
                 // d'une heure et cinq heures à découper librement.
                 'label' => 'Forfait de cinq séances',
                 'slug' => 'forfait-cinq-seances',
+                'sap_eligible' => true,
                 'model' => PricingModel::Package,
                 'amount_cents' => 15000,
                 'unit' => 'les cinq séances d’une heure',
@@ -315,6 +318,7 @@ class ServiceSeeder extends Seeder
                 // lue juste après le montant, souvent sans lire la suite.
                 'label' => 'Atelier collectif',
                 'slug' => 'atelier-collectif',
+                'sap_eligible' => false,
                 'model' => PricingModel::Workshop,
                 'amount_cents' => 1000,
                 'unit' => 'par personne et par séance',
@@ -325,6 +329,7 @@ class ServiceSeeder extends Seeder
             [
                 'label' => 'Atelier financé par un partenaire',
                 'slug' => 'atelier-finance',
+                'sap_eligible' => false,
                 'model' => PricingModel::FundedWorkshop,
                 'amount_cents' => 0,
                 'unit' => 'gratuit pour les participants',
@@ -333,6 +338,7 @@ class ServiceSeeder extends Seeder
             [
                 'label' => 'Intervention pour une collectivité ou une association',
                 'slug' => 'intervention-collectivite',
+                'sap_eligible' => false,
                 'model' => PricingModel::Quote,
                 'is_quote_only' => true,
                 'description' => 'Permanences, ateliers, sensibilisation des agents : un devis est établi selon vos besoins.',

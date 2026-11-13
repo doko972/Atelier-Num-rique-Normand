@@ -7,6 +7,38 @@ Les migrations destructives sont signalées explicitement.
 
 ---
 
+## [Non publié]
+
+### Ajouté — distinction services à la personne / hors SAP
+
+- **Registre des prestations réalisées** (*Au quotidien › Prestations
+  réalisées*) : date, nature, client, durée, montant facturé en euros,
+  numéro de facture. C'est la comptabilité séparée qu'exige la dispense
+  d'exclusivité SAP.
+- Quatre natures SAP, toutes **à domicile** : formation informatique,
+  installation de PC, maintenance logicielle (assistance informatique) et
+  assistance administrative. Hors SAP : distance, lieu partenaire, atelier
+  collectif, intervention pour une structure, autre.
+- **Bilan SAP** : part SAP de l'année (objectif ≥ 70 %), plafond légal du
+  hors SAP (30 % du CA de l'année précédente) et marge restante, chiffres
+  par trimestre et par activité pour les états d'activité nova, export CSV.
+- Alerte au tableau de bord dès que le hors SAP atteint 80 % de sa limite.
+- Bouton « Enregistrer une prestation » sur une demande de rendez-vous,
+  qui reprend le client, la date et une nature suggérée.
+- Tarifs : case « Éligible aux services à la personne ». Le crédit d'impôt
+  (badge, prix après crédit, encadré explicatif) ne s'affiche sur le site
+  qu'une fois le **numéro de déclaration SAP** renseigné dans les
+  paramètres.
+- Nouvelle permission `manage_interventions`, détenue par les
+  administrateurs uniquement.
+
+### Déploiement
+
+- Migration `2026_11_13_000100_create_interventions_table` (non
+  destructive) puis `db:seed --force` pour la permission et le paramètre.
+
+---
+
 ## [1.0.0] — 2026-08-06
 
 Première version. Couvre les phases 1 à 4 du cahier des charges.

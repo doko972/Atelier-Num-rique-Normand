@@ -13,6 +13,7 @@ use App\Models\DataDeletionRequest;
 use App\Models\DataExportRequest;
 use App\Models\PracticalGuide;
 use App\Models\WorkshopRegistration;
+use App\Services\SapComplianceService;
 use App\Services\StatisticsService;
 use Illuminate\Contracts\View\View;
 
@@ -21,11 +22,17 @@ use Illuminate\Contracts\View\View;
  */
 class DashboardController extends Controller
 {
-    public function __invoke(StatisticsService $statistics): View
+    public function __invoke(StatisticsService $statistics, SapComplianceService $sap): View
     {
         $user = request()->user();
 
         return view('admin.dashboard', [
+            // Répartition SAP / hors SAP : signalée dès qu'elle approche de
+            // la limite, pour arbitrer avant d'accepter une commande.
+            'sapSummary' => $user->hasPermission(Permission::ManageInterventions)
+                ? $sap->yearSummary((int) now()->year)
+                : null,
+
             'counters' => $statistics->dashboardCounters(),
             'fillRate' => $statistics->averageFillRate(),
             'cancellationRate' => $statistics->cancellationRate(),

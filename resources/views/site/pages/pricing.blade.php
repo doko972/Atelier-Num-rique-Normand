@@ -34,6 +34,18 @@
                                 @endif
                             </p>
 
+                            @if ($sapNumber && $pricing->sap_eligible)
+                                <p>
+                                    <x-badge variant="success">{{ __('site.pricing.sap_badge') }}</x-badge>
+                                    @if ($pricing->formattedAmountAfterTaxCredit())
+                                        <br>
+                                        <span class="text-small">
+                                            {{ __('site.pricing.sap_after_credit', ['amount' => $pricing->formattedAmountAfterTaxCredit()]) }}
+                                        </span>
+                                    @endif
+                                </p>
+                            @endif
+
                             @if ($pricing->duration_minutes)
                                 <p class="text-muted">
                                     {{ __('site.pricing.duration') }} :
@@ -82,6 +94,42 @@
             @endif
         </div>
     </section>
+
+    @if ($sapNumber)
+        {{-- La distinction tient au lieu : à domicile, l'heure ouvre droit au
+             crédit d'impôt ; à distance ou en salle, non. Le dire clairement
+             évite qu'une personne compte sur un remboursement qui ne viendra
+             pas. --}}
+        <section class="section" aria-labelledby="credit-impot">
+            <div class="container container--narrow">
+                <h2 id="credit-impot">{{ __('site.pricing.sap_title') }}</h2>
+
+                <p>{{ __('site.pricing.sap_intro', ['number' => $sapNumber]) }}</p>
+
+                <div class="split">
+                    <div>
+                        <h3>{{ __('site.pricing.sap_eligible_title') }}</h3>
+                        <ul>
+                            @foreach (\App\Enums\InterventionActivity::sapCases() as $activity)
+                                <li>{{ $activity->label() }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3>{{ __('site.pricing.sap_not_eligible_title') }}</h3>
+                        <ul>
+                            @foreach (__('site.pricing.sap_not_eligible') as $item)
+                                <li>{{ $item }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+
+                <p class="text-small text-muted">{{ __('site.pricing.sap_ceiling') }}</p>
+            </div>
+        </section>
+    @endif
 
     <section class="section section--secondary">
         <div class="container container--narrow">
